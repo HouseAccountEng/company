@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.email       = [ 'claudiob@users.noreply.github.com' ]
   spec.homepage    = 'https://github.com/claudiob/company'
   spec.summary     = 'Any company'
-  spec.description = 'A library to expose endpoint for a generic company'
+  spec.description = 'The records a field-service business holds, whichever platform holds them'
   spec.license     = 'MIT'
 
   spec.metadata['homepage_uri']      = spec.homepage
@@ -17,4 +17,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version         = '>= 3'
 
   spec.files = `git ls-files -z lib CHANGELOG.md LICENSE.txt README.md`.split "\x0"
+
+  spec.add_dependency 'activesupport' # presence, compact_blank, to_sentence, 2.months go without it
 end
