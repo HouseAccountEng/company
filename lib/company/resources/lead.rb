@@ -4,13 +4,13 @@ module Company
     include Person, Timestamped
 
     # @return [String, nil] where the lead came from.
-    def source = @attributes[:source]
+    def source = attribute :source
 
     # @return [String, nil] where the lead stands in the business's pipeline.
-    def status = @attributes[:status]
+    def status = attribute :status
 
     # @return [String, nil] what the lead asked for, in their words.
-    def notes = @attributes[:notes]
+    def notes = attribute :notes
 
     # @return [Location, nil] where the work would happen.
     def location = record Location, :location

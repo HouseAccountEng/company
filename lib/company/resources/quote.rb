@@ -4,16 +4,16 @@ module Company
     include Itemized, Named, Timestamped
 
     # @return [String, nil] the ID of the customer the quote went to.
-    def customer_id = @attributes[:customer_id]
+    def customer_id = attribute :customer_id
 
     # @return [String, nil] the ID of the lead the quote answers.
-    def lead_id = @attributes[:lead_id]
+    def lead_id = attribute :lead_id
 
     # @return [String, nil] where the quote stands: drafted, sent, approved, or turned down.
-    def status = @attributes[:status]
+    def status = attribute :status
 
     # @return [Time, nil] when the quote went to the customer.
-    def sent_at = @attributes[:sent_at]
+    def sent_at = time :sent_at
 
     # @return [Customer, nil] who the quote went to, where they came back with it.
     def customer = record Customer, :customer

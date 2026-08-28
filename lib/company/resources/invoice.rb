@@ -7,25 +7,25 @@ module Company
     def self.window = :issued_at
 
     # @return [String, nil] the ID of the job the invoice bills.
-    def job_id = @attributes[:job_id]
+    def job_id = attribute :job_id
 
     # @return [String, nil] the ID of the customer the invoice went to.
-    def customer_id = @attributes[:customer_id]
+    def customer_id = attribute :customer_id
 
     # @return [String, nil] the number the business prints on it.
-    def number = @attributes[:number]
+    def number = attribute :number
 
     # @return [String, nil] where the invoice stands: drafted, sent, paid, or overdue.
-    def status = @attributes[:status]
+    def status = attribute :status
 
     # @return [BigDecimal, Float, nil] what is still owed on it, in dollars.
-    def balance = @attributes[:balance]
+    def balance = attribute :balance
 
     # @return [Time, nil] when the invoice went to the customer.
-    def issued_at = @attributes[:issued_at]
+    def issued_at = time :issued_at
 
     # @return [Time, nil] when the invoice falls due.
-    def due_at = @attributes[:due_at]
+    def due_at = time :due_at
 
     # @return [Job, nil] the work the invoice bills, where it came back with the invoice.
     def job = record Job, :job

@@ -4,7 +4,7 @@ module Company
     include Person, Timestamped
 
     # @return [String, nil] the business the customer is, where the customer is a business.
-    def company_name = @attributes[:company_name]
+    def company_name = attribute :company_name
 
     # @return [String, nil] the person's name, or the business's where the person has none.
     def name = super || company_name.presence

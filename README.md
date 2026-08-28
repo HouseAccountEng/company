@@ -91,7 +91,9 @@ window.starts_at, window.ends_at, window.available?, window.employees
 ```
 
 Nothing nested comes back unasked. `job.customer` is the customer where the list was asked to
-`includes` it, and nil otherwise -- `job.customer_id` is always there to `find` one by.
+`includes` it, and nil otherwise -- `job.customer_id` is always there to `find` one by. Every
+moment reads as a `Time`, however the platform wrote it, and a record is only ever reached
+through its company: nothing here is built by hand.
 
 ## Answering as a company
 
@@ -107,18 +109,39 @@ class Jobber
     relation.type # => Company::Job
     relation.conditions # => { scheduled_at: 2.months.ago..Time.now, status: 'archived' }
     relation.sorts, relation.cap, relation.inclusions
-    Enumerator.new { |yielder| ... yielder << Company::Job.new(attributes:, company: self) }
+    Enumerator.new { |yielder| ... yielder << Job.new(node: node, company: self) }
   end
 
   # The record filed under an ID, or nil. The account is asked for with no ID at all.
   def read(type, id = nil) = ...
+
+  # How the platform spells its keys.
+  def keys = :camel
 end
 ```
 
-A record is built from a Hash keyed by the names this gem reads -- `scheduled_at`, not
-`startAt` -- so translating a platform's answer is the includer's whole job. `ids(relation)`
-walks the list by default; an includer whose platform prices a page of IDs below a page of
-records overrides it.
+A record holds the node the platform answered, as it came, and a gem reads it by subclassing
+each kind -- `class Jobber::Job < Company::Job` -- declaring the readers whose key is spelled
+differently or whose value is not what the vocabulary promises. `keys` says how much of that
+is needed:
+
+```ruby
+def keys = :snake # first_name reads first_name: only a differently named key is declared
+def keys = :camel # first_name reads firstName, created_at reads createdAt, and so on
+def keys = nil    # the default: the gem declares every reader, and an undeclared one raises
+```
+
+So a gem whose platform writes `first_name` inherits `first_name` outright, and one whose
+customer carries `mobile_number`, `home_number` and `work_number` declares `phone` alone:
+
+```ruby
+class Housecall::Customer < Company::Customer
+  def phone = @node['mobile_number'] || @node['home_number'] || @node['work_number']
+end
+```
+
+`ids(relation)` walks the list by default; an includer whose platform prices a page of IDs below
+a page of records overrides it.
 
 Everything an includer raises descends from `Company::Error`: `Company::Refused` where the
 platform will not take the credentials themselves, and `Company::Retriable` where it held the

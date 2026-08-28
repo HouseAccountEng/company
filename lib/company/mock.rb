@@ -11,8 +11,9 @@ module Company
     include Company
 
     # @param account [Hash] the business, keyed by what {Account} reads.
-    # @param customers [Array<Hash>] the records of each kind, keyed by what each reads, dated
-    #   with whatever the test gave them: what answers to `past` and `upcoming` is that.
+    # @param customers [Array<Hash>] the records of each kind, keyed by what each reads, in
+    #   snake_case, and dated with whatever the test gave them: what answers to `past` and
+    #   `upcoming` is that.
     def initialize(account: {}, customers: [], locations: [], leads: [], quotes: [], jobs: [],
       visits: [], invoices: [], payments: [], employees: [], availability: [])
       @account = account
@@ -29,8 +30,8 @@ module Company
     # @return [Enumerator::Lazy<Resource>] the records, built only as far as they are walked.
     def walk(relation)
       matched = @records.fetch(relation.type).select { |record| matches? record, relation }
-      cut(sorted(matched, relation.sorts), relation.cap).lazy.map do |attributes|
-        relation.type.new attributes: attributes, company: self
+      cut(sorted(matched, relation.sorts), relation.cap).lazy.map do |node|
+        relation.type.new node: node, company: self
       end
     end
 
@@ -38,9 +39,12 @@ module Company
     # @param id [String, nil] the ID it is filed under, or nothing for the account.
     # @return [Resource, nil] the record, or nil where the test handed none under that ID.
     def read(type, id = nil)
-      attributes = type == Account ? @account : @records.fetch(type).find { |it| it[:id] == id }
-      type.new attributes: attributes, company: self if attributes
+      node = type == Account ? @account : @records.fetch(type).find { |it| it[:id] == id }
+      type.new node: node, company: self if node
     end
+
+    # A test writes its records the way Ruby writes a Hash.
+    def keys = :snake
 
   private
 

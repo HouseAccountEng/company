@@ -39,7 +39,8 @@ require 'company/mock'
 # holds. Included the way Enumerable is: a class answering {#walk} and {#read} gets the account
 # and every list below, each narrowed, ordered and cut before a single record is read.
 #
-# An includer answers two methods, neither defined here:
+# An includer answers two methods, neither defined here, and may say how its platform spells
+# its keys, so that a reader whose name matches one goes undeclared -- see {#keys}:
 #
 #     walk(relation)  # => an Enumerable of every Resource the relation names, a page at a time
 #     read(type, id)  # => the Resource filed under that ID, or nil; the account with no ID
@@ -84,4 +85,10 @@ module Company
   # @param relation [Relation] the list, narrowed as the caller left it.
   # @return [Array<String>] every ID in the list.
   def ids(relation) = walk(relation).map(&:id).to_a
+
+  # How the platform spells its keys. :snake or :camel lets a reader whose name matches its key
+  # go undeclared in a subclass, `first_name` reading `first_name` or `firstName`; nil, the
+  # default, says the gem declares every reader itself, and an undeclared one raises.
+  # @return [Symbol, nil] :snake, :camel, or nil.
+  def keys = nil
 end

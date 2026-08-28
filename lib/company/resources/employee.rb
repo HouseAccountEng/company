@@ -4,7 +4,7 @@ module Company
     include Person
 
     # @return [String, nil] what the business calls their job.
-    def role = @attributes[:role]
+    def role = attribute :role
 
     # @return [Relation] the stops they are assigned to.
     def visits = @company.visits.where employee_id: id

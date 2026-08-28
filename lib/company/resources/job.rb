@@ -7,25 +7,25 @@ module Company
     def self.window = :scheduled_at
 
     # @return [String, nil] the ID of the customer the work is for.
-    def customer_id = @attributes[:customer_id]
+    def customer_id = attribute :customer_id
 
     # @return [String, nil] the ID of the location the work happens at.
-    def location_id = @attributes[:location_id]
+    def location_id = attribute :location_id
 
     # @return [String, nil] the ID of the quote the job was won with.
-    def quote_id = @attributes[:quote_id]
+    def quote_id = attribute :quote_id
 
     # @return [String, nil] what the work is, in the words whoever opened the job wrote.
-    def instructions = @attributes[:instructions]
+    def instructions = attribute :instructions
 
     # @return [String, nil] where the business files the job in its own workflow.
-    def status = @attributes[:status]
+    def status = attribute :status
 
     # @return [Time, nil] when the work is booked for.
-    def scheduled_at = @attributes[:scheduled_at]
+    def scheduled_at = time :scheduled_at
 
     # @return [Time, nil] when the work was finished.
-    def completed_at = @attributes[:completed_at]
+    def completed_at = time :completed_at
 
     # The lines say what the work was where a title only says what it was called, so they read
     # better than one, and {Named#name} stands in where the job has no lines.

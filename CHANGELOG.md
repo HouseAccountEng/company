@@ -9,7 +9,8 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 
 * [Feature] `Company`, included the way `Enumerable` is: a class answering `walk` and `read`
   gets `account`, `customers`, `locations`, `leads`, `quotes`, `jobs`, `visits`, `invoices`,
-  `payments`, `employees` and `availability`
+  `payments`, `employees` and `availability`, and says with `keys` how its platform spells
+  them, so a reader matching a key goes undeclared
 * [Feature] `Company::Relation`, the list every one of those answers: `where`, `order`, `limit`,
   `includes`, `past`, `upcoming`, `find` and `ids`, none of it read until walked
 * [Feature] A record for each kind, with the lists that hang off it, and `Company::Mock`, a

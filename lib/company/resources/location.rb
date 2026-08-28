@@ -2,25 +2,25 @@ module Company
   # Where work happens: one address on a customer's file.
   class Location < Resource
     # @return [String, nil] the ID of the customer whose address it is.
-    def customer_id = @attributes[:customer_id]
+    def customer_id = attribute :customer_id
 
     # @return [String, nil] the street, number included.
-    def street = @attributes[:street]
+    def street = attribute :street
 
     # @return [String, nil] the town.
-    def city = @attributes[:city]
+    def city = attribute :city
 
     # @return [String, nil] the state, as two letters.
-    def state = @attributes[:state]
+    def state = attribute :state
 
     # @return [String, nil] the ZIP code.
-    def zip = @attributes[:zip]
+    def zip = attribute :zip
 
     # @return [Float, nil] how far north.
-    def latitude = @attributes[:latitude]
+    def latitude = attribute :latitude
 
     # @return [Float, nil] how far east.
-    def longitude = @attributes[:longitude]
+    def longitude = attribute :longitude
 
     # @return [Customer, nil] whose address it is, where it came back with the location.
     def customer = record Customer, :customer

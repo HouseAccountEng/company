@@ -26,7 +26,7 @@ RSpec.describe Company::Relation do
   end
 
   it 'walks whatever the company answers, one record at a time' do
-    job = Company::Job.new attributes: { id: 'job-01' }
+    job = instance_double Company::Job
     allow(company).to receive(:walk).with(jobs).and_return [ job ].each
 
     expect(jobs.first).to be job
@@ -34,7 +34,7 @@ RSpec.describe Company::Relation do
   end
 
   it 'finds a record by the ID the company files it under, not by walking' do
-    job = Company::Job.new attributes: { id: 'job-01' }
+    job = instance_double Company::Job
     allow(company).to receive(:read).with(Company::Job, 'job-01').and_return job
 
     expect(jobs.find('job-01')).to be job

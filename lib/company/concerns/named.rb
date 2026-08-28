@@ -3,7 +3,7 @@ module Company
   # opened without ever typing a name for it.
   module Named
     # @return [String, nil] what whoever opened the record called it.
-    def title = @attributes[:title]
+    def title = attribute :title
 
     # Untitled happens often enough, and something has to stand in for it on a list.
     # @return [String, nil] the title, or the ID the record is filed under.

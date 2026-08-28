@@ -1,6 +1,6 @@
 module Company
-  # What every record shares: its attributes in this gem's words, whichever platform answered
-  # them, and the company it was read from, for the lists that hang off it.
+  # What every record shares: the node the platform answered it as, and the company it was
+  # read from. Built by the company, never by a caller: a record is reached through a list.
   class Resource
     # @param company [Company] the business the records are read from.
     # @return [Relation] every record of this kind the business holds.
@@ -11,26 +11,40 @@ module Company
     # @return [Symbol] the attribute a window narrows by.
     def self.window = :created_at
 
-    # @param attributes [Hash] the record, keyed by the names this gem reads it by.
-    # @param company [Company, nil] the business it was read from.
-    def initialize(attributes: {}, company: nil)
-      @attributes = attributes
+    # @param node [Hash] the record as the platform answered it, or as a test wrote it.
+    # @param company [Company] the business it was read from.
+    def initialize(node:, company:)
+      @node = node.with_indifferent_access
       @company = company
     end
 
     # @return [String, nil] the ID the company files the record under.
-    def id = @attributes[:id]
+    def id = attribute :id
 
   private
 
-    # The record another names, where the list was asked to bring it back beside each record.
-    def record(type, key)
-      type.new attributes: @attributes[key], company: @company if @attributes[key]
+    # What the platform answers under a reader's name, spelled the way the company's keys are.
+    # Deriving a key from a name is the one place this gem leans that way: :snake is a plain
+    # lookup, and a company declaring nil declares every reader itself.
+    def attribute(name)
+      case @company.keys
+        when :snake then @node[name]
+        when :camel then @node[name.to_s.camelize :lower]
+        else raise NotImplementedError, "#{self.class}##{name} is not declared"
+      end
     end
 
-    # The records another carries, in the order the company holds them.
-    def records(type, key)
-      Array(@attributes[key]).map { |each| type.new attributes: each, company: @company }
+    # A moment whichever way it arrived: a Time from a test, an ISO 8601 string from a platform,
+    # and nothing from an empty answer.
+    def time(name)
+      value = attribute name
+      value.is_a?(String) ? (Time.iso8601 value if value.present?) : value
     end
+
+    # The record another names, where the list was asked to bring it back beside each record.
+    def record(type, key) = (type.new node: @node[key], company: @company if @node[key])
+
+    # The records another carries, in the order the company holds them.
+    def records(type, key) = Array(@node[key]).map { |node| type.new node: node, company: @company }
   end
 end

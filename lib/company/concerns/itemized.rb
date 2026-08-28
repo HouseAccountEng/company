@@ -7,6 +7,6 @@ module Company
     def lines = records Line, :lines
 
     # @return [BigDecimal, Float, nil] what the lines add up to, in dollars.
-    def total = @attributes[:total]
+    def total = attribute :total
   end
 end
