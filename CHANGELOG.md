@@ -8,10 +8,11 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 ## [Unreleased]
 
 * [Feature] `Company`, included the way `Enumerable` is: a class answering `read` gets
-  `account`, and says with `keys` how its platform spells them -- :snake, :camel, or nil for a
-  gem that declares every reader itself
-* [Feature] `Company::Account` -- id, name, phone, email, website, time_zone -- and
-  `Company::Mock`, a company answering from what a test hands it
+  `account`
+* [Feature] `Company::Account` -- id, name, phone, email, website, zone -- and `Company::Mock`,
+  a company answering from what a test hands it. A subclass names under `.keys` the node keys
+  its platform spells otherwise -- `{ phone: :phone_number }` -- and a reader left out reads
+  the key of its own name
 
 ## 0.1.0 - 2026-08-28
 

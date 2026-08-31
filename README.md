@@ -32,7 +32,7 @@ it is read without one.
 company.account.id # => 'account-01'
 company.account.name # => 'Acme Plumbing'
 company.account.phone # => '7044597540', as the platform holds it
-company.account.email, company.account.website, company.account.time_zone
+company.account.email, company.account.website, company.account.zone
 ```
 
 A record is only ever reached through its company: nothing here is built by hand, and a field
@@ -117,35 +117,24 @@ class Jobber
 
   # The record filed under an ID, or nil. The account is asked for with no ID at all.
   def read(type, id = nil) = ...
-
-  # How the platform spells its keys.
-  def keys = :camel
 end
 ```
 
 A record holds the node the platform answered, as it came, and a gem reads it by subclassing
-each kind -- `class Jobber::Account < Company::Account` -- declaring the readers whose key is
-spelled differently or whose value is not what the vocabulary promises. `keys` says how much
-of that is needed:
-
-```ruby
-def keys = :snake # time_zone reads time_zone: only a differently named key is declared
-def keys = :camel # time_zone reads timeZone, and so on
-def keys = nil    # the default: the gem declares every reader, and an undeclared one raises
-```
-
-So a gem whose platform writes `name` inherits `name` outright, and one whose account carries
-its number as `phone_number` declares `phone` alone:
+each kind -- `class Jobber::Account < Company::Account` -- naming under `keys` the node keys
+its platform spells otherwise than the vocabulary. A reader left out reads the key of its own
+name, so a gem whose platform writes `name` inherits `name` outright:
 
 ```ruby
 class Housecall::Account < Company::Account
-  # Housecall Pro spells it phone_number.
-  def phone = @node['phone_number']
+  # What Housecall Pro spells otherwise than the vocabulary.
+  def self.keys = { phone: :phone_number, email: :support_email, zone: :time_zone }
 end
 ```
 
-A subclass whose platform answers lazily overrides the private `node` instead, and every
-inherited reader waits with it.
+A reader whose value needs more than a rename is declared outright, and a platform that
+answers lazily overrides the private `node` instead, with every inherited reader waiting on
+it.
 
 ## Mocking a company
 

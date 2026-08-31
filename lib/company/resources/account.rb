@@ -14,6 +14,6 @@ module Company
     def website = attribute :website
 
     # @return [String, nil] the zone the business books its days in.
-    def time_zone = attribute :time_zone
+    def zone = attribute :zone
   end
 end

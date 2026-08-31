@@ -17,8 +17,5 @@ module Company
     # @param type [Class] what to read.
     # @return [Resource] the record, built from what the test handed over.
     def read(type, _id = nil) = type.new node: @account, company: self
-
-    # A test writes its records the way Ruby writes a Hash.
-    def keys = :snake
   end
 end

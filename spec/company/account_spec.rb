@@ -5,11 +5,11 @@ RSpec.describe Company::Account do
     company = Company::Mock.new account: { id: 'account-01', name: 'Acme Plumbing',
                                            phone: '7044597540', email: 'hi@acme.example',
                                            website: 'https://acme.example',
-                                           time_zone: 'America/New_York', }
+                                           zone: 'America/New_York', }
 
     expect(company.account).to have_attributes id: 'account-01', name: 'Acme Plumbing',
       phone: '7044597540', email: 'hi@acme.example', website: 'https://acme.example',
-      time_zone: 'America/New_York'
+      zone: 'America/New_York'
   end
 
   it 'answers nothing under a reader the platform holds nothing for' do

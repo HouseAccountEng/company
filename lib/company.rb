@@ -12,9 +12,8 @@ require 'company/resources/account'
 require 'company/mock'
 
 # The business behind a set of credentials on a field-service platform, and every record it
-# holds. Included the way Enumerable is: a class answering {#read} gets the account, and may
-# say how its platform spells its keys -- see {#keys}. The vocabulary grows a kind at a time,
-# and the account is the first.
+# holds. Included the way Enumerable is: a class answering {#read} gets the account. The
+# vocabulary grows a kind at a time, and the account is the first.
 #
 # An includer answers one method, not defined here:
 #
@@ -24,10 +23,4 @@ module Company
   # by, so it is read without one.
   # @return [Account] the account.
   def account = read Account
-
-  # How the platform spells its keys. :snake or :camel lets a reader whose name matches its key
-  # go undeclared in a subclass, `time_zone` reading `time_zone` or `timeZone`; nil, the
-  # default, says the gem declares every reader itself, and an undeclared one raises.
-  # @return [Symbol, nil] :snake, :camel, or nil.
-  def keys = nil
 end
