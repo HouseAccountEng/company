@@ -31,12 +31,13 @@ it is read without one.
 ```ruby
 company.account.id # => 'account-01'
 company.account.name # => 'Acme Plumbing'
-company.account.phone # => '7044597540', as the platform holds it
-company.account.email # => 'hi@acme.example'
+company.account.phone # => '4562232934', ten digits however the platform wrote them
 ```
 
 A record is only ever reached through its company: nothing here is built by hand, and a field
-the platform holds nothing for answers nil.
+the platform holds nothing for answers nil. A phone is the exception worth naming: it answers
+the same ten digits whatever punctuation the platform wrote, nil where none is held, and a
+number that is not a North American one raises `Company::Error` rather than answering nil.
 
 ## Concept map
   
@@ -128,7 +129,7 @@ name, so a gem whose platform writes `name` inherits `name` outright:
 ```ruby
 class Housecall::Account < Company::Account
   # What Housecall Pro spells otherwise than the vocabulary.
-  def self.keys = { phone: :phone_number, email: :support_email }
+  def self.keys = { phone: :phone_number }
 end
 ```
 

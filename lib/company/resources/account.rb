@@ -4,10 +4,9 @@ module Company
     # @return [String] what the business calls itself.
     def name = attribute :name
 
-    # @return [String, nil] the number the business is reached on, as the platform holds it.
-    def phone = attribute :phone
-
-    # @return [String, nil] the address the business is written to.
-    def email = attribute :email
+    # However the platform wrote the number, a caller dials the same ten digits.
+    # @return [String, nil] the ten digits to dial, or nil where the platform holds none.
+    # @raise [Error] where the platform holds one that is not a North American number.
+    def phone = Phone.from attribute(:phone)
   end
 end

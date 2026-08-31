@@ -5,6 +5,8 @@ require 'company/version'
 require 'active_support'
 require 'active_support/core_ext'
 
+require 'company/error'
+require 'company/phone'
 require 'company/resource'
 require 'company/resources/account'
 
