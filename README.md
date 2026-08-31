@@ -34,6 +34,16 @@ company.account.name # => 'Acme Plumbing'
 company.account.phone # => '4562232934', ten digits however the platform wrote them
 ```
 
+A job is read by the ID the company files it under:
+
+```ruby
+job = company.job 'job-01'
+job.description # => 'Furnace tune-up'
+job.created_at # => 2026-08-09 14:00:00 UTC, a Time however the platform wrote it
+job.scheduled_at, job.completed_at # => Times too, nil where nothing is booked or done yet
+job.amount # => 260.0, dollars, as a BigDecimal
+```
+
 A record is only ever reached through its company: nothing here is built by hand, and a field
 the platform holds nothing for answers nil. A phone is the exception worth naming: it answers
 the same ten digits whatever punctuation the platform wrote, nil where none is held, and a

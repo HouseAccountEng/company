@@ -31,5 +31,15 @@ module Company
     def node = @node
 
     def attribute(name) = node[self.class.keys.fetch(name, name)]
+
+    def time(name)
+      value = attribute name
+      value.is_a?(String) ? (Time.iso8601 value if value.present?) : value
+    end
+
+    def decimal(name)
+      value = attribute name
+      BigDecimal value.to_s if value.present?
+    end
   end
 end

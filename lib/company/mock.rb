@@ -10,12 +10,18 @@ module Company
     include Company
 
     # @param account [Hash] business, keyed by the symbols {Account} reads.
-    def initialize(account: {})
+    # @param jobs [Array<Hash>] jobs, each keyed by the symbols {Job} reads.
+    def initialize(account: {}, jobs: [])
       @account = account
+      @jobs = jobs
     end
 
     # @param type [Class] what to read.
-    # @return [Resource] record built from what was handed over.
-    def read(type, _id = nil) = type.new node: @account, company: self
+    # @param id [String, nil] ID it is filed under, or nothing for the account.
+    # @return [Resource, nil] record built from what was handed over, or nil where none was.
+    def read(type, id = nil)
+      node = type == Account ? @account : @jobs.find { |job| job[:id] == id }
+      type.new node: node, company: self if node
+    end
   end
 end
