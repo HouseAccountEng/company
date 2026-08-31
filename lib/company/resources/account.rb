@@ -4,7 +4,7 @@ module Company
     # @return [String, nil] what the business calls itself.
     def name = attribute :name
 
-    # @return [String, nil] the number the business is reached on, as ten digits.
+    # @return [String, nil] the number the business is reached on, as the platform holds it.
     def phone = attribute :phone
 
     # @return [String, nil] the address the business is written to.
@@ -15,8 +15,5 @@ module Company
 
     # @return [String, nil] the zone the business books its days in.
     def time_zone = attribute :time_zone
-
-    # @return [Location, nil] where the business is run from.
-    def location = record Location, :location
   end
 end

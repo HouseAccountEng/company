@@ -5,9 +5,8 @@ class CamelCompany
 
   def keys = :camel
 
-  def walk(relation)
-    node = { 'firstName' => 'Jane', 'lastName' => 'Doe', 'createdAt' => '2026-08-09T14:00:00Z' }
-    [ relation.type.new(node: node, company: self) ]
+  def read(type, _id = nil)
+    type.new node: { 'name' => 'Acme Plumbing', 'timeZone' => 'America/New_York' }, company: self
   end
 end
 
@@ -15,27 +14,17 @@ end
 class SilentCompany
   include Company
 
-  def walk(relation) = [ relation.type.new(node: { first_name: 'Jane' }, company: self) ]
+  def read(type, _id = nil) = type.new(node: { name: 'Acme Plumbing' }, company: self)
 end
 
 RSpec.describe Company, '#keys' do
   it 'reads a camelCase key under a snake_case reader where the gem said :camel' do
-    customer = CamelCompany.new.customers.first
-
-    expect(customer).to have_attributes first_name: 'Jane', last_name: 'Doe', name: 'Jane Doe',
-      created_at: Time.utc(2026, 8, 9, 14), email: nil
+    expect(CamelCompany.new.account).to have_attributes name: 'Acme Plumbing',
+      time_zone: 'America/New_York', phone: nil
   end
 
   it 'reads nothing for a gem that said nothing, so an undeclared reader is loud' do
-    customer = SilentCompany.new.customers.first
-
-    expect { customer.first_name }.
-      to raise_error NotImplementedError, 'Company::Customer#first_name is not declared'
-  end
-
-  it 'reads a snake_case key whichever way it was written where the gem said :snake' do
-    company = Company::Mock.new customers: [ { id: 'customer-01', 'first_name' => 'Jane' } ]
-
-    expect(company.customers.first).to have_attributes id: 'customer-01', first_name: 'Jane'
+    expect { SilentCompany.new.account.name }.
+      to raise_error NotImplementedError, 'Company::Account#name is not declared'
   end
 end

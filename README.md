@@ -2,7 +2,11 @@
 
 The records a field-service business holds -- its customers, jobs, visits, invoices -- in one
 vocabulary, whichever platform holds them. A gem that speaks to one platform includes `Company`
-and answers two methods; every list, every window on it and every reader on a record is here.
+and answers one method; every reader on a record is here.
+
+The vocabulary grows a kind at a time, and the account is the first: job, line, visit,
+location and customer follow, and the full shape -- relations, windows, twelve kinds -- waits
+on the `resources` branch until each takes its turn.
 
 ## How to install
 
@@ -21,96 +25,95 @@ otherwise once the major is real -- at which point the pin loosens to `~> 1.0`.
 ## What a company answers
 
 A company is the business behind a set of credentials. Whatever class holds those credentials
-includes `Company` and gets the account and one list per kind of record:
+includes `Company` and gets the account: there is no list of them and no ID to find one by, so
+it is read without one.
 
 ```ruby
-company.account # => the business itself: name, phone, email, website, time_zone, location
-company.customers # => an Enumerable of every customer, nothing fetched yet
-company.locations, company.leads, company.quotes, company.jobs, company.visits
-company.invoices, company.payments, company.employees, company.availability
+company.account.id # => 'account-01'
+company.account.name # => 'Acme Plumbing'
+company.account.phone # => '7044597540', as the platform holds it
+company.account.email, company.account.website, company.account.time_zone
 ```
 
-### Lists
+A record is only ever reached through its company: nothing here is built by hand, and a field
+the platform holds nothing for answers nil.
 
-Every list is a `Company::Relation`: chain it the way Active Record does, and nothing is read
-until the walk starts. A page is read only once the one before it runs out, so `first` costs
-one request where `to_a` costs as many as the business has pages.
+## Concept map
+  
+┌─────────────────┬───────────────────┬───────────────────────────┬────────────────────────────────────┬──────────────────────────────────┬───────────────────────────────────┬─────────────────────────────────┐
+│     Concept     │      Jobber       │       Housecall Pro       │            ServiceTitan            │              Vonigo              │             Gataware              │          ServiceMinder          │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Account /       │                   │ Company (R;               │                                    │ Franchise (R,                    │                                   │ Organization (RW via brand      │
+│ company         │ Account (R)       │ franchise_info,           │ Tenant in URL; Business Units (R)  │ security/franchises; token       │ Franchisee (/franchises/{id}, R)  │ key), Brand above               │
+│                 │                   │ schedule_availability W)  │                                    │ session per franchise)           │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Customer        │ Client (RW)       │ Customer (RW)             │ Customer (RW)                      │ Client (data/Clients, RW)        │ Customer (R;                      │ Contact (RW; contacts/locate,   │
+│                 │                   │                           │                                    │                                  │ /franchises/{id}/customers)       │ addupdate)                      │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Location /      │ Property (RW)     │ Address (RW)              │ Location (RW; customerId, zoneId)  │ Location (data/Locations, RW)    │ — (address fields on Customer)    │ — (address on Contact)          │
+│ property        │                   │                           │                                    │                                  │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Contact person  │ —                 │ —                         │ Contact = contact method (type:    │ Contact (data/Contacts, RW)      │ —                                 │ —                               │
+│                 │                   │                           │ MobilePhone, value), not a person  │                                  │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│                 │                   │                           │ Lead, Booking (RW); leadCallId,    │ Lead (data/Leads, subtype of     │                                   │ Contact with Category           │
+│ Lead / request  │ Request (RW)      │ Lead (RW, convert)        │ bookingId on Job                   │ Client), Case (data/Cases)       │ —                                 │ Lead/Prospect; brand-key        │
+│                 │                   │                           │                                    │                                  │                                   │ addupdate distributes lead      │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Estimate /      │ Quote (RW)        │ Estimate + Options (RW)   │ Estimate (Sales API)               │ Quote (R, convert→WorkOrder)     │ —                                 │ Proposal (RW: create, details,  │
+│ quote           │                   │                           │                                    │                                  │                                   │ alltemplates)                   │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│                 │                   │                           │ Job (RW; jobTypeId,                │ WorkOrder (data/WorkOrders, RW;  │ Appointment (job and visit are    │ Appointment-centric; "Job" only │
+│ Job             │ Job (RW)          │ Job (RW)                  │ businessUnitId, appointmentCount)  │ status strings like "Service     │ one object)                       │  in marketing copy              │
+│                 │                   │                           │                                    │ Complete")                       │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Visit /         │                   │                           │ Appointment (RW; start, end,       │ schedule + Route on WorkOrder;   │ Appointment (R, PATCH; date_time, │ Appointment (find, update,      │
+│ appointment     │ Visit (RW)        │ Job Appointment (RW)      │ arrivalWindowStart/End);           │ Jobs object exists (?)           │  duration, team)                  │ book, cancel, addtip)           │
+│                 │                   │                           │ Appointment Assignment (dispatch)  │                                  │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Invoice         │ Invoice (RW)      │ Invoice (R)               │ Invoice (R; subTotal, total,       │ Invoice (R,                      │ — (totals live on Appointment)    │ Invoice (get, query, import)    │
+│                 │                   │                           │ balance)                           │ WorkOrdersAddInvoice)            │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Payment         │ Payment (R)       │ — in spec; webhook events │ Payment (R + POST with             │ Payment (R)                      │ —                                 │ Payment (query, import)         │
+│                 │                   │  only                     │ splits[{invoiceId, amount}])       │                                  │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│                 │                   │                           │                                    │                                  │ AppointmentService                │                                 │
+│ Line item       │ LineItem (RW)     │ Line Item (RW)            │ Invoice items[] (R/W)              │ Charge (data/Charges, R)         │ (/appointment-services,           │ ProposalLine / AddOnParts       │
+│                 │                   │                           │                                    │                                  │ POST/DELETE)                      │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Employee / user │ User (R)          │ Employee (R)              │ Technician, Employee; technician   │ Route (resources/Routes, R) is   │ phcs[] + team embedded on         │ User (user/all, create),        │
+│                 │                   │                           │ rating (PUT)                       │ the dispatchable "groomer"       │ Appointment                       │ ServiceAgent                    │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Catalog         │ ProductOrService  │ Job Types, Materials      │ Pricebook (RW)                     │ ServiceType, PriceItem           │ Franchise Service / add-on        │ Service (services/all), Part    │
+│                 │ (RW)              │                           │                                    │ (data/priceLists)                │ (/franchise-services)             │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Tag / note /    │ Tag, Note,        │                           │                                    │ Fields are all custom            │                                   │                                 │
+│ custom field    │ CustomField (RW)  │ Tag, Note, Attachment     │ tagTypeIds, customFields[], notes  │ (system/objects metadata); Note  │ —                                 │ Tags, Notes, CustomFields (RW)  │
+│                 │                   │                           │                                    │ (W)                              │                                   │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Webhook / event │ Webhook topics    │ Webhook subscription +    │ Webhooks API                       │ — (poll by dateMode              │ — (poll search=updated|gt|…;      │ NotificationUri callback;       │
+│                 │ (RW)              │ Events                    │                                    │ edited/created)                  │ /deleted-appointments)            │ DataSubscriber fetch/clear poll │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│                 │                   │ Booking Windows, Schedule │ Dispatch capacity (POST), arrival  │ Availability                     │ /appointments/availability →      │                                 │
+│ Availability    │ —                 │  Availability             │ windows                            │ (resources/availability), Lock   │ Morning/Midday/Afternoon blocks   │ appointments/slotsearch         │
+│                 │                   │                           │                                    │                                  │ per team                          │                                 │
+├─────────────────┼───────────────────┼───────────────────────────┼────────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────┼─────────────────────────────────┤
+│ Franchise /     │ —                 │ X-Company-Id, franchise   │ Tenant + Business Units            │ Franchise session per token      │ franchisee_id on every call, one  │ Brand → Organizations;          │
+│ multi-location  │                   │ metadata                  │                                    │                                  │ key per env                       │ org/brand/data keys             │
+└─────────────────┴───────────────────┴───────────────────────────┴────────────────────────────────────┴──────────────────────────────────┴───────────────────────────────────┴─────────────────────────────────┘
 
-```ruby
-company.jobs.where status: 'archived'
-company.jobs.where(customer_id: id).order(scheduled_at: :desc).limit 10
-company.jobs.includes :customer, location: :customer # brought back beside each job
-company.jobs.find id # => the job filed under that ID, or nil
-company.jobs.past.ids # => %w[job-01 ...], every page of them, and nothing else about them
-```
+Gataware: Two Maids' in-house platform (trademark of Two Maids Franchising, LLC), Django-style REST at https://gataware.com/api/ (new) and /rest-api/ (old), X-Api-Key header; Swagger at testing.gataware.com/swagger/
+(private). Not a market vendor, but a real API with franchisee, customer, appointment, availability and add-on resources.
 
-Either half of a schedule takes how much of it you meant -- a duration, measured from the same
-now the half is split at -- and a walk that stops at a boundary reads only the pages up to it:
-
-```ruby
-company.jobs.past # => the ones booked before now
-company.jobs.upcoming # => the ones booked from now on
-company.jobs.past(2.months) # => only as far back as two months, which is fewer pages
-company.visits.upcoming(1.week).ids
-```
-
-Each kind is dated by its own moment: a job by `scheduled_at`, a visit by `starts_at`, an
-invoice by `issued_at`, a payment by `paid_at`, a window by `starts_at`, and everything else by
-`created_at`. A condition written as a range does the same by hand:
-
-```ruby
-company.invoices.where issued_at: 1.year.ago..Time.now
-```
-
-### Records
-
-```ruby
-job = company.jobs.first
-job.name # => 'Furnace tune-up', or the job's ID where nobody titled it
-job.title, job.instructions, job.status, job.total
-job.scheduled_at, job.completed_at, job.created_at, job.updated_at
-job.customer_id, job.location_id, job.quote_id
-job.summary # => '3 Faucet install and 2 Valve change': the lines as a sentence, or the name
-job.lines # => an Array of Company::Line, each answering quantity, name, unit_price, total
-job.visits, job.invoices # => Relations narrowed to this job
-
-customer = company.customers.find id
-customer.name # => 'Jane Doe', or the business's name where the customer is one
-customer.first_name, customer.last_name, customer.company_name, customer.email, customer.phone
-customer.locations, customer.jobs, customer.invoices
-
-visit.job_id, visit.starts_at, visit.ends_at, visit.all_day?, visit.confirmed?, visit.employees
-invoice.number, invoice.status, invoice.total, invoice.balance, invoice.issued_at, invoice.due_at
-payment.invoice_id, payment.amount, payment.method, payment.paid_at
-quote.lead_id, quote.status, quote.total, quote.sent_at, quote.lines, quote.jobs
-lead.name, lead.phone, lead.email, lead.source, lead.status, lead.notes, lead.location
-location.street, location.city, location.state, location.zip, location.latitude, location.longitude
-location.to_s # => '1 Main St, Raleigh, NC 27601'
-employee.name, employee.email, employee.phone, employee.role, employee.visits
-window.starts_at, window.ends_at, window.available?, window.employees
-```
-
-Nothing nested comes back unasked. `job.customer` is the customer where the list was asked to
-`includes` it, and nil otherwise -- `job.customer_id` is always there to `find` one by. Every
-moment reads as a `Time`, however the platform wrote it, and a record is only ever reached
-through its company: nothing here is built by hand.
 
 ## Answering as a company
 
 `Company` is included the way `Enumerable` is. Where `Enumerable` asks for `each`, `Company`
-asks for two methods, and builds everything above on them:
+asks for `read`, and builds everything above on it:
 
 ```ruby
 class Jobber
   include Company
-
-  # Every record the relation names, as this gem's records, a page read only as it is walked.
-  def walk(relation)
-    relation.type # => Company::Job
-    relation.conditions # => { scheduled_at: 2.months.ago..Time.now, status: 'archived' }
-    relation.sorts, relation.cap, relation.inclusions
-    Enumerator.new { |yielder| ... yielder << Job.new(node: node, company: self) }
-  end
 
   # The record filed under an ID, or nil. The account is asked for with no ID at all.
   def read(type, id = nil) = ...
@@ -121,51 +124,39 @@ end
 ```
 
 A record holds the node the platform answered, as it came, and a gem reads it by subclassing
-each kind -- `class Jobber::Job < Company::Job` -- declaring the readers whose key is spelled
-differently or whose value is not what the vocabulary promises. `keys` says how much of that
-is needed:
+each kind -- `class Jobber::Account < Company::Account` -- declaring the readers whose key is
+spelled differently or whose value is not what the vocabulary promises. `keys` says how much
+of that is needed:
 
 ```ruby
-def keys = :snake # first_name reads first_name: only a differently named key is declared
-def keys = :camel # first_name reads firstName, created_at reads createdAt, and so on
+def keys = :snake # time_zone reads time_zone: only a differently named key is declared
+def keys = :camel # time_zone reads timeZone, and so on
 def keys = nil    # the default: the gem declares every reader, and an undeclared one raises
 ```
 
-So a gem whose platform writes `first_name` inherits `first_name` outright, and one whose
-customer carries `mobile_number`, `home_number` and `work_number` declares `phone` alone:
+So a gem whose platform writes `name` inherits `name` outright, and one whose account carries
+its number as `phone_number` declares `phone` alone:
 
 ```ruby
-class Housecall::Customer < Company::Customer
-  def phone = @node['mobile_number'] || @node['home_number'] || @node['work_number']
+class Housecall::Account < Company::Account
+  # Housecall Pro spells it phone_number.
+  def phone = @node['phone_number']
 end
 ```
 
-`ids(relation)` walks the list by default; an includer whose platform prices a page of IDs below
-a page of records overrides it.
-
-Everything an includer raises descends from `Company::Error`: `Company::Refused` where the
-platform will not take the credentials themselves, and `Company::Retriable` where it held the
-request to a rate and the question is worth asking again.
+A subclass whose platform answers lazily overrides the private `node` instead, and every
+inherited reader waits with it.
 
 ## Mocking a company
 
-`Company::Mock` is a company answering from what a test hands it, and the one includer this gem
-ships. Only the reading is mocked: narrowing, walking and every reader run the real code.
+`Company::Mock` is a company answering from what a test hands it, and the one includer this
+gem ships. Only the reading is mocked: every reader on a record runs the real code.
 
 ```ruby
-company = Company::Mock.new account: { id: 'account-01', name: 'Acme Plumbing' },
-  customers: [ { id: 'customer-01', first_name: 'Jane', last_name: 'Doe' } ],
-  jobs: [ { id: 'job-01', title: 'Tune-up', scheduled_at: 1.day.ago, customer_id: 'customer-01',
-            lines: [ { quantity: 3.0, name: 'Faucet install' } ] } ]
-
-company.jobs.past(2.months).ids # => %w[job-01]
-company.jobs.find('job-01').summary # => '3 Faucet install'
-company.customers.find('customer-01').jobs.count # => 1
+company = Company::Mock.new account: { id: 'account-01', name: 'Acme Plumbing' }
+company.account.name # => 'Acme Plumbing'
+company.account.phone # => nil
 ```
-
-The mock dates nothing it was handed: what answers to `past` and `upcoming` is whatever
-`scheduled_at` the test gave each job. A condition matches by `===`, so a range covers and
-anything else has to equal.
 
 ## Development
 
