@@ -9,8 +9,8 @@ module Company
   class Mock
     include Company
 
-    # @param account [Hash] business, keyed by the symbols {Account} reads.
-    # @param jobs [Array<Hash>] jobs, each keyed by the symbols {Job} reads.
+    # @param account [Hash] business, keyed by what {Account} reads.
+    # @param jobs [Array<Hash>] jobs, each keyed by what {Job} reads.
     def initialize(account: {}, jobs: [])
       @account = account
       @jobs = jobs

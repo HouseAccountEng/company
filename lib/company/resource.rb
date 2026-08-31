@@ -14,12 +14,9 @@ module Company
     def self.node_keys = attributes.map { |name| keys.fetch name, name }
 
     # @param company [Company] business the record was read from.
-    # @param node [Hash] record as the platform answered it, keyed by symbols.
+    # @param node [Hash] record as the platform answered it.
     def initialize(company:, node: {})
-      strings = node.keys.grep_v Symbol
-      raise ArgumentError, "node keys are not symbols: #{strings.join ', '}" if strings.any?
-
-      @node = node
+      @node = node.with_indifferent_access
       @company = company
     end
 
