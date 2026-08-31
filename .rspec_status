@@ -1,0 +1,9 @@
+example_id                            | status | run_time        |
+------------------------------------- | ------ | --------------- |
+./spec/company/account_spec.rb[1:1]   | passed | 0.00125 seconds |
+./spec/company/account_spec.rb[1:2]   | passed | 0.00072 seconds |
+./spec/company/account_spec.rb[1:3:1] | passed | 0.00042 seconds |
+./spec/company/account_spec.rb[1:3:2] | passed | 0.00006 seconds |
+./spec/company/account_spec.rb[1:3:3] | passed | 0.0007 seconds  |
+./spec/company/account_spec.rb[1:4]   | passed | 0.00008 seconds |
+./spec/company/mapping_spec.rb[1:1]   | passed | 0.00007 seconds |

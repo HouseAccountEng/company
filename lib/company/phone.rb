@@ -4,9 +4,9 @@ module Company
     # Ten digits whose area code and exchange open with 2 through 9.
     NANP = /\A[2-9]\d{2}[2-9]\d{6}\z/
 
-    # @param number [String, nil] the number as the platform holds it.
-    # @return [String, nil] the ten digits to dial, or nil where none was held.
-    # @raise [Error] where a number was held and it is not a North American one.
+    # @param number [String, nil] number as the platform holds it.
+    # @return [String, nil] ten digits to dial, or nil where none was held.
+    # @raise [Error] raised if a held number is not a valid North American one.
     def self.from(number)
       return if number.blank?
 

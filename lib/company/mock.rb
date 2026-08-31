@@ -9,13 +9,13 @@ module Company
   class Mock
     include Company
 
-    # @param account [Hash] the business, keyed by what {Account} reads.
+    # @param account [Hash] business, keyed by what {Account} reads.
     def initialize(account: {})
       @account = account
     end
 
     # @param type [Class] what to read.
-    # @return [Resource] the record, built from what the test handed over.
+    # @return [Resource] record built from what was handed over.
     def read(type, _id = nil) = type.new node: @account, company: self
   end
 end

@@ -23,6 +23,6 @@ require 'company/mock'
 module Company
   # The one business the credentials belong to: there is no list of them and no ID to find it
   # by, so it is read without one.
-  # @return [Account] the account.
+  # @return [Account] account the credentials belong to.
   def account = read Account
 end

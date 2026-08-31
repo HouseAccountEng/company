@@ -3,6 +3,5 @@
 /pkg/
 /tmp/
 *.gem
-.rspec_status
 coverage/
 Gemfile.lock

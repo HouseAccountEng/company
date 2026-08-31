@@ -1,3 +1,5 @@
+require 'test_helper'
+
 # A gem maps the readers its platform spells otherwise than the vocabulary, and leaves the
 # rest to read the key of their own name.
 class MappedAccount < Company::Account
@@ -14,9 +16,11 @@ class MappedCompany
   end
 end
 
-RSpec.describe Company::Resource, '.keys' do
-  it 'reads a mapped reader off the key the gem named, and the rest off their own name' do
-    expect(MappedCompany.new.account).to have_attributes name: 'Acme Plumbing',
-      phone: '4562232934'
+class MappingTest < Minitest::Test
+  def test_reads_a_mapped_reader_off_the_named_key_and_the_rest_off_their_own
+    account = MappedCompany.new.account
+
+    assert_equal 'Acme Plumbing', account.name
+    assert_equal '4562232934', account.phone
   end
 end

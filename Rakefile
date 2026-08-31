@@ -1,8 +1,11 @@
 require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
+require 'rake/testtask'
 require 'rubocop/rake_task'
 
-RSpec::Core::RakeTask.new :spec
+Rake::TestTask.new do |task|
+  task.libs << 'test'
+  task.test_files = FileList['test/**/*_test.rb']
+end
 
 RuboCop::RakeTask.new
 
@@ -54,4 +57,4 @@ task :folder_size do
   puts "No tracked folder over #{FolderSize::MAX} code files"
 end
 
-task default: %i[spec rubocop file_length folder_size]
+task default: %i[test rubocop file_length folder_size]
