@@ -11,8 +11,8 @@ class MappedCompany
   include Company
 
   def read(_type, _id = nil)
-    MappedAccount.new company: self, node: { 'name' => 'Acme Plumbing',
-                                             'phone_number' => '+1 (456) 223-2934', }
+    MappedAccount.new company: self, node: { name: 'Acme Plumbing',
+                                             phone_number: '+1 (456) 223-2934', }
   end
 end
 

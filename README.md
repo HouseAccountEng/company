@@ -121,7 +121,8 @@ class Jobber
 end
 ```
 
-A record holds the node the platform answered, as it came, and a gem reads it by subclassing
+A record holds the node the platform answered, keyed by symbols -- a gem symbolizes its
+platform's JSON once, at the door, and anything else is refused -- and reads it by subclassing
 each kind -- `class Jobber::Account < Company::Account` -- naming under `keys` the node keys
 its platform spells otherwise than the vocabulary. A reader left out reads the key of its own
 name, so a gem whose platform writes `name` inherits `name` outright:

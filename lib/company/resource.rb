@@ -9,9 +9,12 @@ module Company
     def self.keys = {}
 
     # @param company [Company] business the record was read from.
-    # @param node [Hash] record as the platform answered it.
+    # @param node [Hash] record as the platform answered it, keyed by symbols.
     def initialize(company:, node: {})
-      @node = node.with_indifferent_access
+      strings = node.keys.grep_v Symbol
+      raise ArgumentError, "node keys are not symbols: #{strings.join ', '}" if strings.any?
+
+      @node = node
       @company = company
     end
 

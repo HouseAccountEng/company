@@ -9,7 +9,7 @@ module Company
   class Mock
     include Company
 
-    # @param account [Hash] business, keyed by what {Account} reads.
+    # @param account [Hash] business, keyed by the symbols {Account} reads.
     def initialize(account: {})
       @account = account
     end
