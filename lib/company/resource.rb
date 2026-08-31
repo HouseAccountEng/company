@@ -15,7 +15,7 @@ module Company
       @company = company
     end
 
-    # @return [String, nil] the ID the company files the record under.
+    # @return [String] the ID the company files the record under.
     def id = attribute :id
 
   private

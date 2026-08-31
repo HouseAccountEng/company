@@ -32,7 +32,7 @@ it is read without one.
 company.account.id # => 'account-01'
 company.account.name # => 'Acme Plumbing'
 company.account.phone # => '7044597540', as the platform holds it
-company.account.email, company.account.website, company.account.zone
+company.account.email # => 'hi@acme.example'
 ```
 
 A record is only ever reached through its company: nothing here is built by hand, and a field
@@ -128,7 +128,7 @@ name, so a gem whose platform writes `name` inherits `name` outright:
 ```ruby
 class Housecall::Account < Company::Account
   # What Housecall Pro spells otherwise than the vocabulary.
-  def self.keys = { phone: :phone_number, email: :support_email, zone: :time_zone }
+  def self.keys = { phone: :phone_number, email: :support_email }
 end
 ```
 

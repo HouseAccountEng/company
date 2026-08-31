@@ -9,7 +9,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 
 * [Feature] `Company`, included the way `Enumerable` is: a class answering `read` gets
   `account`
-* [Feature] `Company::Account` -- id, name, phone, email, website, zone -- and `Company::Mock`,
+* [Feature] `Company::Account` -- id, name, phone, email -- and `Company::Mock`,
   a company answering from what a test hands it. A subclass names under `.keys` the node keys
   its platform spells otherwise -- `{ phone: :phone_number }` -- and a reader left out reads
   the key of its own name
