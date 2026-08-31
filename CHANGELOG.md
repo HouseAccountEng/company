@@ -17,6 +17,8 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   platform wrote it; one that is not raises `Company::Error` rather than answering nil
 * [Feature] A node is keyed by symbols, refused otherwise: a gem symbolizes its platform's
   JSON once, at the door, and no record pays for indifferent access on every read
+* [Feature] A kind names its attributes, and `node_keys` answers them through the `.keys`
+  map, so a gem builds its query from what the vocabulary reads and writes no key by hand
 
 ## 0.1.0 - 2026-08-28
 

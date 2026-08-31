@@ -8,6 +8,11 @@ module Company
     # @return [Hash] reader-to-key exceptions, empty where every name is its key.
     def self.keys = {}
 
+    # The keys a platform is expected to answer a node with: each attribute the kind reads,
+    # through {.keys}, so a gem asks its platform for exactly these and writes none by hand.
+    # @return [Array<Symbol>] node keys, in the order the attributes are read.
+    def self.node_keys = attributes.map { |name| keys.fetch name, name }
+
     # @param company [Company] business the record was read from.
     # @param node [Hash] record as the platform answered it, keyed by symbols.
     def initialize(company:, node: {})

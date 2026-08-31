@@ -23,4 +23,8 @@ class MappingTest < Minitest::Test
     assert_equal 'Acme Plumbing', account.name
     assert_equal '4562232934', account.phone
   end
+
+  def test_names_the_node_keys_a_platform_is_expected_to_answer
+    assert_equal %i[id name phone_number], MappedAccount.node_keys
+  end
 end

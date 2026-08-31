@@ -1,6 +1,9 @@
 module Company
   # The business the credentials belong to.
   class Account < Resource
+    # What every account reads, by the vocabulary's names.
+    def self.attributes = %i[id name phone]
+
     # @return [String] business name.
     def name = attribute :name
 
