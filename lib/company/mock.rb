@@ -16,6 +16,9 @@ module Company
       @jobs = jobs
     end
 
+    # @return [Array<Job>] every job the test handed over, in its order.
+    def jobs = @jobs.map { |node| Job.new node: node, company: self }
+
     # @param type [Class] what to read.
     # @param id [String, nil] ID it is filed under, or nothing for the account.
     # @return [Resource, nil] record built from what was handed over, or nil where none was.

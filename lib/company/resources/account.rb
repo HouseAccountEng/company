@@ -7,6 +7,9 @@ module Company
     # @return [String] business name.
     def name = attribute :name
 
+    # @return [Enumerable<Job>] every job the business holds, paged however the gem pages them.
+    def jobs = @company.jobs
+
     # @return [String, nil] 10-digits phone number.
     # @raise [Error] raised if phone is not a valid 10-digits North American number.
     def phone = Phone.from attribute(:phone)

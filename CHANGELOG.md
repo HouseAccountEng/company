@@ -22,8 +22,9 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   wrote them, the amount as dollars in a BigDecimal, and only the id and created_at are
   never nil
 * [Feature] `Company::Line` -- id, name, description, quantity, amount -- the lines a job is
-  billed as, each reading as how many of what, a whole quantity whole and the amount in
-  dollars as a BigDecimal
+  billed as, a whole quantity read whole and the amount in dollars as a BigDecimal
+* [Feature] `account.jobs`, every job the business holds: the gem including `Company` says
+  how they are queried and how their pages follow one another, and the account walks them
 
 ## 0.1.0 - 2026-08-28
 

@@ -25,11 +25,13 @@ class JobTest < Minitest::Test
   def test_reads_the_lines_a_job_is_billed_as
     line, fee = @job.lines
 
-    assert_equal [ '3 Faucet install', 'Trip fee' ], [ line.to_s, fee.to_s ]
     assert_equal 'line-01', line.id
-    assert_equal 3, line.quantity
+    assert_equal 'Faucet install', line.name
     assert_equal 'Replace washers', line.description
+    assert_equal 3, line.quantity
     assert_equal 80, line.amount
     assert_instance_of BigDecimal, line.amount
+    assert_equal 'Trip fee', fee.name
+    assert_nil fee.quantity
   end
 end

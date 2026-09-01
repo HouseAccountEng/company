@@ -21,9 +21,10 @@ require 'company/mock'
 # holds. Included the way Enumerable is: a class answering {#read} gets the account. The
 # vocabulary grows a kind at a time, and the account is the first.
 #
-# An includer answers one method, not defined here:
+# An includer answers two methods, neither defined here:
 #
 #     read(type, id = nil)  # => the Resource filed under that ID, or nil; the account with none
+#     jobs                  # => an Enumerable of every Job, paged however the platform pages
 module Company
   # The one business the credentials belong to: there is no list of them and no ID to find it
   # by, so it is read without one.
