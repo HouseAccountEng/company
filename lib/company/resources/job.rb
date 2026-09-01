@@ -18,5 +18,8 @@ module Company
 
     # @return [BigDecimal, nil] what the job comes to, in dollars.
     def amount = decimal :amount
+
+    # @return [Enumerable<Line>] lines the work is billed as, empty where none came back.
+    def lines = records Line, :lines
   end
 end

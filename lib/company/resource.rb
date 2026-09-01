@@ -38,5 +38,9 @@ module Company
       value = attribute name
       BigDecimal value.to_s if value.present?
     end
+
+    def records(type, key)
+      Array(@node[key]).map { |each| type.new node: each, company: @company }
+    end
   end
 end

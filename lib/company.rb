@@ -11,6 +11,7 @@ require 'company/error'
 require 'company/phone'
 require 'company/resource'
 require 'company/resources/account'
+require 'company/resources/line'
 require 'company/resources/job'
 
 # After every resource, which is what it hands back.

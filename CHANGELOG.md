@@ -21,6 +21,9 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   amount -- read as `company.job id`; the three moments answer as Times however the platform
   wrote them, the amount as dollars in a BigDecimal, and only the id and created_at are
   never nil
+* [Feature] `Company::Line` -- id, name, description, quantity, amount -- the lines a job is
+  billed as, each reading as how many of what, a whole quantity whole and the amount in
+  dollars as a BigDecimal
 
 ## 0.1.0 - 2026-08-28
 

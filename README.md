@@ -42,6 +42,10 @@ job.description # => 'Furnace tune-up'
 job.created_at # => 2026-08-09 14:00:00 UTC, a Time however the platform wrote it
 job.scheduled_at, job.completed_at # => Times too, nil where nothing is booked or done yet
 job.amount # => 260.0, dollars, as a BigDecimal
+job.lines # => an Enumerable of Company::Line, empty where none came back
+job.lines.map(&:to_s) # => ['3 Faucet install', 'Trip fee']: how many of what, each
+job.lines.first.name, job.lines.first.description, job.lines.first.quantity
+job.lines.first.amount # => 240.0, dollars, as a BigDecimal
 ```
 
 A record is only ever reached through its company: nothing here is built by hand, and a field
