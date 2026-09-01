@@ -39,6 +39,8 @@ module Company
       BigDecimal value.to_s if value.present?
     end
 
+    def record(type, key) = (type.new node: @node[key], company: @company if @node[key])
+
     def records(type, key)
       Array(@node[key]).map { |each| type.new node: each, company: @company }
     end

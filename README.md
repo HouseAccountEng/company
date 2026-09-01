@@ -49,7 +49,17 @@ job.lines.first.amount # => 240.0, dollars, as a BigDecimal
 job.visits # => an Enumerable of Company::Visit, the stops the work is booked as
 job.visits.first.description, job.visits.first.starts_at, job.visits.first.ends_at
 job.visits.first.all_day? # => false, where the stop takes an hour rather than the day
+
+customer = job.customer # => a Company::Customer, where one came back beside the job
+customer.name # => 'Jane Doe', whichever of the names the company holds
+customer.first_name, customer.last_name, customer.locations
+
+location = job.location # => a Company::Location, where one came back beside the job
+location.street, location.city, location.state, location.zip
+location.latitude, location.longitude, location.customer
 ```
+
+A visit answers `customer` and `location` the same way.
 
 A record is only ever reached through its company: nothing here is built by hand, and a field
 the platform holds nothing for answers nil. A phone is the exception worth naming: it answers

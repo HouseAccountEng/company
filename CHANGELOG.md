@@ -27,6 +27,11 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   how they are queried and how their pages follow one another, and the account walks them
 * [Feature] `Company::Visit` -- id, description, starts_at, ends_at, all_day? -- the stops a
   job is booked as, read off `job.visits`
+* [Feature] `Company::Customer` -- id, first_name, last_name, and a name joined from
+  whichever the company holds -- and `Company::Location` -- id, street, city, state, zip,
+  latitude, longitude. A job and a visit answer `customer` and `location` where one came
+  back beside them, a customer answers the `locations` on file, and a location answers its
+  `customer`
 
 ## 0.1.0 - 2026-08-28
 

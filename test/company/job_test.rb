@@ -12,7 +12,17 @@ class JobTest < Minitest::Test
                                           visits: [ { id: 'visit-01', description: 'Day one',
                                                       starts_at: '2026-08-09T14:00:00Z',
                                                       ends_at: '2026-08-09T16:00:00Z',
-                                                      all_day: false, } ], } ]
+                                                      all_day: false,
+                                                      customer: { id: 'customer-01' },
+                                                      location: { id: 'location-01' }, } ],
+                                          customer: { id: 'customer-01', first_name: 'Jane',
+                                                      last_name: 'Doe',
+                                                      locations: [ { id: 'location-01' } ], },
+                                          location: { id: 'location-01', street: '1 Main St',
+                                                      city: 'Raleigh', state: 'NC',
+                                                      zip: '27601', latitude: 35.77,
+                                                      longitude: -78.63,
+                                                      customer: { id: 'customer-01' }, }, } ]
     @job = company.job 'job-01'
   end
 
@@ -47,5 +57,23 @@ class JobTest < Minitest::Test
     assert_equal Time.utc(2026, 8, 9, 14), visit.starts_at
     assert_equal Time.utc(2026, 8, 9, 16), visit.ends_at
     refute visit.all_day?
+    assert_equal 'customer-01', visit.customer.id
+    assert_equal 'location-01', visit.location.id
+  end
+
+  def test_reads_who_the_work_is_for_and_where_it_happens
+    customer, location = @job.customer, @job.location
+
+    assert_equal 'Jane Doe', customer.name
+    assert_equal 'Jane', customer.first_name
+    assert_equal 'Doe', customer.last_name
+    assert_equal %w[location-01], customer.locations.map(&:id)
+    assert_equal '1 Main St', location.street
+    assert_equal 'Raleigh', location.city
+    assert_equal 'NC', location.state
+    assert_equal '27601', location.zip
+    assert_in_delta 35.77, location.latitude
+    assert_in_delta(-78.63, location.longitude)
+    assert_equal 'customer-01', location.customer.id
   end
 end

@@ -15,5 +15,11 @@ module Company
 
     # @return [Boolean, nil] whether the visit takes a whole day rather than an hour of it.
     def all_day? = attribute :all_day
+
+    # @return [Customer, nil] who the stop is for, where they came back beside the visit.
+    def customer = record Customer, :customer
+
+    # @return [Location, nil] where the stop happens, where it came back beside the visit.
+    def location = record Location, :location
   end
 end

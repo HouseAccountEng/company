@@ -24,5 +24,11 @@ module Company
 
     # @return [Enumerable<Visit>] stops the work is booked as, empty where none came back.
     def visits = records Visit, :visits
+
+    # @return [Customer, nil] who the work is for, where they came back beside the job.
+    def customer = record Customer, :customer
+
+    # @return [Location, nil] where the work happens, where it came back beside the job.
+    def location = record Location, :location
   end
 end
