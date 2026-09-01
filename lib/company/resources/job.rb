@@ -21,5 +21,8 @@ module Company
 
     # @return [Enumerable<Line>] lines the work is billed as, empty where none came back.
     def lines = records Line, :lines
+
+    # @return [Enumerable<Visit>] stops the work is booked as, empty where none came back.
+    def visits = records Visit, :visits
   end
 end

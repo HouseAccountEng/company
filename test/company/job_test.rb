@@ -8,7 +8,11 @@ class JobTest < Minitest::Test
     company = Company::Mock.new jobs: [ { id: 'job-01', description: 'Furnace tune-up',
                                           created_at: '2026-08-08T11:00:00Z',
                                           scheduled_at: '2026-08-09T14:00:00Z',
-                                          amount: 260.0, lines: lines, } ]
+                                          amount: 260.0, lines: lines,
+                                          visits: [ { id: 'visit-01', description: 'Day one',
+                                                      starts_at: '2026-08-09T14:00:00Z',
+                                                      ends_at: '2026-08-09T16:00:00Z',
+                                                      all_day: false, } ], } ]
     @job = company.job 'job-01'
   end
 
@@ -33,5 +37,15 @@ class JobTest < Minitest::Test
     assert_instance_of BigDecimal, line.amount
     assert_equal 'Trip fee', fee.name
     assert_nil fee.quantity
+  end
+
+  def test_reads_the_visits_a_job_is_booked_as
+    visit = @job.visits.first
+
+    assert_equal 'visit-01', visit.id
+    assert_equal 'Day one', visit.description
+    assert_equal Time.utc(2026, 8, 9, 14), visit.starts_at
+    assert_equal Time.utc(2026, 8, 9, 16), visit.ends_at
+    refute visit.all_day?
   end
 end

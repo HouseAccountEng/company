@@ -46,6 +46,9 @@ job.amount # => 260.0, dollars, as a BigDecimal
 job.lines # => an Enumerable of Company::Line, empty where none came back
 job.lines.first.name, job.lines.first.description, job.lines.first.quantity
 job.lines.first.amount # => 240.0, dollars, as a BigDecimal
+job.visits # => an Enumerable of Company::Visit, the stops the work is booked as
+job.visits.first.description, job.visits.first.starts_at, job.visits.first.ends_at
+job.visits.first.all_day? # => false, where the stop takes an hour rather than the day
 ```
 
 A record is only ever reached through its company: nothing here is built by hand, and a field

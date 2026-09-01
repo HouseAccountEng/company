@@ -25,6 +25,8 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   billed as, a whole quantity read whole and the amount in dollars as a BigDecimal
 * [Feature] `account.jobs`, every job the business holds: the gem including `Company` says
   how they are queried and how their pages follow one another, and the account walks them
+* [Feature] `Company::Visit` -- id, description, starts_at, ends_at, all_day? -- the stops a
+  job is booked as, read off `job.visits`
 
 ## 0.1.0 - 2026-08-28
 
