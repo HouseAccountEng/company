@@ -46,7 +46,7 @@ business.id, business.name, business.phone # => '7044597540'
 business.subsidiaries # => itself first, then every business under it, flat; a gem says which
 
 lead.id, lead.customer              # who asked for work, and the Company::Customer filed for them
-quote.id, quote.lead, quote.amount  # a price sent to answer a lead, dollars as a BigDecimal
+quote.id, quote.amount              # a price sent to a customer, dollars as a BigDecimal
 
 job.id, job.quote                         # => the Company::Quote it was won with, or nil
 job.description                           # what the work is called
