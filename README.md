@@ -58,7 +58,7 @@ job.lines                                 # => Company::Line: id, name, descript
 job.location                              # => Company::Location, or nil
 
 visit.id, visit.description, visit.starts_at, visit.ends_at
-visit.anytime?, visit.location
+visit.anytime?, visit.job                 # => the Company::Job the stop belongs to
 
 invoice.id, invoice.job, invoice.amount   # the Company::Job it bills, or nil
 invoice.fulfilled_at                # when the billed work was finished, or the bill issued
