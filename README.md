@@ -43,6 +43,7 @@ nil where none is held or none is a North American number to dial.
 
 ```ruby
 business.id, business.name, business.phone # => '7044597540'
+business.subsidiaries # => itself first, then every business under it, flat; a gem says which
 
 lead.id, lead.customer_id           # who asked for work, and the customer filed for them
 quote.id, quote.lead_id             # a price sent to answer a lead

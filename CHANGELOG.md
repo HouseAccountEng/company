@@ -10,7 +10,10 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 * [Feature] `Company::Account`, the gateway a set of credentials opens: a gem subclasses it
   and answers `business`, `leads`, `quotes`, `jobs`, `visits` and `invoices` as its platform
   offers them; a reader left out raises `NotImplementedError` naming the gem and the reader
-* [Feature] `Company::Business` -- id, name, phone -- who the credentials belong to
+* [Feature] `Company::Business` -- id, name, phone, subsidiaries -- who the credentials belong to.
+  The subsidiaries are the business itself and then every business under it at any depth,
+  flat, so the list is never empty; a gem whose platform nests them answers the ones directly
+  under it from the private `below`
 * [Feature] `Company::Lead` -- id, customer_id -- and `Company::Quote` -- id, lead_id
 * [Feature] `Company::Job` -- id, quote_id, quote_amount, instructions, summary, created_at,
   scheduled_at, completed_at, amount, lines, location. The summary is the lines as a sentence,
