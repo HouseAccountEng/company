@@ -11,11 +11,10 @@ class LineTest < Minitest::Test
     assert_equal 3, line.quantity
     assert_equal 80, line.amount
     assert_instance_of BigDecimal, line.amount
-    assert_equal '3 Faucet install', line.to_s
   end
 
-  def test_keeps_a_fractional_quantity_and_names_a_line_without_one_alone
+  def test_keeps_a_fractional_quantity_and_reads_none_where_the_platform_holds_none
     assert_equal 2.5, Company::Line.new(node: { quantity: 2.5 }).quantity
-    assert_equal 'Trip fee', Company::Line.new(node: { name: 'Trip fee' }).to_s
+    assert_nil Company::Line.new(node: { name: 'Trip fee' }).quantity
   end
 end

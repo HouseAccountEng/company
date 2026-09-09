@@ -19,7 +19,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   completed_at, amount, lines, location. The moments answer as Times however the platform
   wrote them and the amounts as dollars in a BigDecimal
 * [Feature] `Company::Line` -- id, name, description, quantity, amount -- a whole quantity read
-  whole, and `to_s` answering how many of what: `3 Bathroom Faucet Installation`
+  whole
 * [Feature] `Company::Visit` -- id, description, starts_at, ends_at, all_day?, confirmed?,
   location
 * [Feature] `Company::Invoice` -- id, job, amount, and fulfilled_at: when the billed work

@@ -54,7 +54,7 @@ job.notes                                 # what was written on the job for the 
 job.created_at, job.scheduled_at, job.completed_at # Times, nil where not booked or done
 job.amount                                # dollars, as a BigDecimal
 job.lines                                 # => Company::Line: id, name, description,
-                                          #    quantity (3, not 3.0), amount, to_s
+                                          #    quantity (3, not 3.0), amount
 job.location                              # => Company::Location, or nil
 
 visit.id, visit.description, visit.starts_at, visit.ends_at
