@@ -3,15 +3,8 @@ module Company
   class Job < Resource
     # What every job reads, by the vocabulary's names.
     def self.attributes
-      %i[id quote_id quote_amount description instructions created_at scheduled_at completed_at
-         amount]
+      %i[id description instructions created_at scheduled_at completed_at amount]
     end
-
-    # @return [String, nil] ID of the quote the job was won with.
-    def quote_id = attribute :quote_id
-
-    # @return [BigDecimal, nil] what that quote came to, in dollars.
-    def quote_amount = decimal :quote_amount
 
     # @return [String, nil] what whoever opened the job asked the crew to mind.
     def instructions = attribute :instructions
@@ -31,6 +24,9 @@ module Company
 
     # @return [BigDecimal, nil] what the job comes to, in dollars.
     def amount = decimal :amount
+
+    # @return [Quote, nil] quote the job was won with, where it came back beside the job.
+    def quote = record Quote, :quote
 
     # @return [Array<Line>] lines the work is billed as, empty where none came back.
     def lines = records Line, :lines

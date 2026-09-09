@@ -14,9 +14,9 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   The subsidiaries are the business itself and then every business under it at any depth,
   flat, so the list is never empty; a gem whose platform nests them answers the ones directly
   under it from the private `below`
-* [Feature] `Company::Lead` -- id, customer_id -- and `Company::Quote` -- id, lead_id
-* [Feature] `Company::Job` -- id, quote_id, quote_amount, instructions, summary, created_at,
-  scheduled_at, completed_at, amount, lines, location. The summary is the lines as a sentence,
+* [Feature] `Company::Lead` -- id, customer_id -- and `Company::Quote` -- id, lead_id, amount
+* [Feature] `Company::Job` -- id, quote, instructions, summary, created_at, scheduled_at,
+  completed_at, amount, lines, location. The summary is the lines as a sentence,
   or the description, or the ID, and is never blank; the moments answer as Times however the
   platform wrote them and the amounts as dollars in a BigDecimal
 * [Feature] `Company::Line` -- id, name, description, quantity, amount -- a whole quantity read
