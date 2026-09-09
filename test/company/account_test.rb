@@ -11,10 +11,10 @@ class AccountTest < Minitest::Test
 
     error = assert_raises(NotImplementedError) { account.business }
     assert_equal 'Company::Account does not answer business', error.message
-    assert_raises(NotImplementedError) { account.leads }
-    assert_raises(NotImplementedError) { account.quotes }
     assert_raises(NotImplementedError) { account.jobs }
     assert_raises(NotImplementedError) { account.visits }
+    assert_raises(NotImplementedError) { account.quotes }
+    assert_raises(NotImplementedError) { account.leads }
     assert_raises(NotImplementedError) { account.invoices }
   end
 

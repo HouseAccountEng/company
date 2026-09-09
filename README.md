@@ -25,10 +25,10 @@ it; the vocabulary says what it answers:
 
 ```ruby
 account.business # => a Company::Business, who the credentials belong to
-account.leads    # => the business's leads: `create` files one
-account.quotes   # => the business's quotes: `find` reads one by ID
-account.jobs     # => the business's jobs: `find` reads one by ID
+account.jobs     # => the business's jobs, walked however the platform pages them
 account.visits   # => the business's visits: `find` reads one by ID
+account.quotes   # => the business's quotes: `find` reads one by ID
+account.leads    # => the business's leads: `create` files one
 account.invoices # => the business's invoices: `find` reads one by ID
 ```
 

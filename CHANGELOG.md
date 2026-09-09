@@ -8,7 +8,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 ## 1.0.0 - 2026-09-09
 
 * [Feature] `Company::Account`, the gateway a set of credentials opens: a gem subclasses it
-  and answers `business`, `leads`, `quotes`, `jobs`, `visits` and `invoices` as its platform
+  and answers `business`, `jobs`, `visits`, `quotes`, `leads` and `invoices` as its platform
   offers them; a reader left out raises `NotImplementedError` naming the gem and the reader
 * [Feature] `Company::Business` -- id, name, phone, subsidiaries -- who the credentials belong to.
   The subsidiaries are the business itself and then every business under it at any depth,
