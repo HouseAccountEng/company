@@ -2,7 +2,6 @@
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 AllCops:
-  TargetRubyVersion: 4.0
   # Adopt every cop a new release brings, rather than pinning to today's set
   NewCops: enable
   # An extension we decline is declined in this file, not merely ignored

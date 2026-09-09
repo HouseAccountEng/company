@@ -1,12 +1,9 @@
 # Company
 
-The records a field-service business holds -- its customers, jobs, visits, invoices -- in one
-vocabulary, whichever platform holds them. A gem that speaks to one platform includes `Company`
-and answers one method; every reader on a record is here.
-
-The vocabulary grows a kind at a time, and the account is the first: job, line, visit,
-location and customer follow, and the full shape -- relations, windows, twelve kinds -- waits
-on the `resources` branch until each takes its turn.
+The vocabulary two field-service platforms are read in. An account -- a set of credentials on
+Jobber or Housecall Pro -- opens the business it belongs to and the records the business holds:
+leads, quotes, jobs, visits, invoices. A gem that speaks to one platform subclasses
+`Company::Account` and each kind of record; every reader is named here, once.
 
 ## How to install
 
@@ -16,55 +13,60 @@ To install on your system, run
 
 To use inside a bundled Ruby project, add this line to the `Gemfile`:
 
-    gem 'company', '~> 0.1.0'
+    gem 'company', '~> 1.0'
 
-Below 1.0 the pin names the patch as well as the minor, so `bundle update` stops short of
-`0.2.0`. Semantic Versioning lets a `0.x` release break whatever it likes, and only promises
-otherwise once the major is real -- at which point the pin loosens to `~> 1.0`.
+Semantic Versioning promises that `~> major.minor` never crosses a breaking change, so the pin
+takes every 1.x release and stops short of 2.0.
 
-## What a company answers
+## What an account answers
 
-A company is the business behind a set of credentials. Whatever class holds those credentials
-includes `Company` and gets the account: there is no list of them and no ID to find one by, so
-it is read without one.
+An account is the gateway a set of credentials opens. The gem holding the credentials builds
+it; the vocabulary says what it answers:
 
 ```ruby
-company.account.id # => 'account-01'
-company.account.name # => 'Acme Plumbing'
-company.account.phone # => '4562232934', ten digits however the platform wrote them
-company.account.jobs # => an Enumerable of every job, paged however the gem pages them
+account.business # => a Company::Business, who the credentials belong to
+account.leads    # => the business's leads: `create` files one
+account.quotes   # => the business's quotes: `find` reads one by ID
+account.jobs     # => the business's jobs: `find` reads one by ID
+account.visits   # => the business's visits: `find` reads one by ID
+account.invoices # => the business's invoices: `find` reads one by ID
 ```
 
-A job is read by the ID the company files it under:
+A platform that offers no such thing raises `NotImplementedError` naming the gem and the
+reader, rather than answering an empty list.
+
+## What each record answers
+
+A record holds the node the platform answered, and a field the platform holds nothing for
+answers nil. A phone answers the same ten digits whatever punctuation the platform wrote, and
+nil where none is held or none is a North American number to dial.
 
 ```ruby
-job = company.job 'job-01'
-job.description # => 'Furnace tune-up'
-job.created_at # => 2026-08-09 14:00:00 UTC, a Time however the platform wrote it
-job.scheduled_at, job.completed_at # => Times too, nil where nothing is booked or done yet
-job.amount # => 260.0, dollars, as a BigDecimal
-job.lines # => an Enumerable of Company::Line, empty where none came back
-job.lines.first.name, job.lines.first.description, job.lines.first.quantity
-job.lines.first.amount # => 240.0, dollars, as a BigDecimal
-job.visits # => an Enumerable of Company::Visit, the stops the work is booked as
-job.visits.first.description, job.visits.first.starts_at, job.visits.first.ends_at
-job.visits.first.all_day? # => false, where the stop takes an hour rather than the day
+business.id, business.name, business.phone # => '7044597540'
 
-customer = job.customer # => a Company::Customer, where one came back beside the job
-customer.name # => 'Jane Doe', whichever of the names the company holds
-customer.first_name, customer.last_name, customer.locations
+lead.id, lead.customer_id           # who asked for work, and the customer filed for them
+quote.id, quote.lead_id             # a price sent to answer a lead
 
-location = job.location # => a Company::Location, where one came back beside the job
-location.street, location.city, location.state, location.zip
-location.latitude, location.longitude, location.customer
+job.id, job.quote_id, job.quote_amount    # what the job was won with, dollars as a BigDecimal
+job.instructions                          # what the crew was asked to mind
+job.summary                               # => '3 Faucet install and Trip fee', or the
+                                          #    description, or the ID -- never blank
+job.created_at, job.scheduled_at, job.completed_at # Times, nil where not booked or done
+job.amount                                # dollars, as a BigDecimal
+job.lines                                 # => Company::Line: id, name, description,
+                                          #    quantity (3, not 3.0), amount, to_s
+job.location                              # => Company::Location, or nil
+
+visit.id, visit.description, visit.starts_at, visit.ends_at
+visit.all_day?, visit.confirmed?, visit.location
+
+invoice.id, invoice.job_id, invoice.amount
+invoice.fulfilled_at                # when the billed work was finished, or the bill issued
+
+location.id, location.street, location.city, location.zip
+location.latitude, location.longitude
+location.customer                   # => Company::Customer: id, name, last_name, email, phone
 ```
-
-A visit answers `customer` and `location` the same way.
-
-A record is only ever reached through its company: nothing here is built by hand, and a field
-the platform holds nothing for answers nil. A phone is the exception worth naming: it answers
-the same ten digits whatever punctuation the platform wrote, nil where none is held, and a
-number that is not a North American one raises `Company::Error` rather than answering nil.
 
 ## Concept map
   
@@ -134,48 +136,30 @@ Gataware: Two Maids' in-house platform (trademark of Two Maids Franchising, LLC)
 (private). Not a market vendor, but a real API with franchisee, customer, appointment, availability and add-on resources.
 
 
-## Answering as a company
+## Answering as a gem
 
-`Company` is included the way `Enumerable` is. Where `Enumerable` asks for `each`, `Company`
-asks for `read`, and builds everything above on it:
+A gem subclasses `Company::Account` and answers the readers its platform offers, holding its
+own credentials however the platform hands them out:
 
 ```ruby
-class Jobber
-  include Company
-
-  # The record filed under an ID, or nil. The account is asked for with no ID at all.
-  def read(type, id = nil) = ...
-
-  # Every job, as this gem queries and pages them: the account's jobs delegate here.
-  def jobs = ...
+class Jobber::Account < Company::Account
+  def business = Company::Business.new node: query(BUSINESS)
+  def jobs = Jobber::Jobs.new account: self
 end
 ```
 
-A record holds the node the platform answered, as it came -- either kind of key reads -- and
-a gem reads it by subclassing each kind -- `class Jobber::Account < Company::Account` --
-naming under `keys` the node keys its platform spells otherwise than the vocabulary. A reader left out reads the key of its own
-name, so a gem whose platform writes `name` inherits `name` outright:
+A record is read by subclassing each kind -- `class Housecall::Business < Company::Business`
+-- and naming under `keys` the node keys the platform spells otherwise than the vocabulary. A
+reader left out reads the key of its own name, so a gem whose platform writes `name` inherits
+`name` outright, and a reader whose value needs more than a rename is declared outright:
 
 ```ruby
-class Housecall::Account < Company::Account
+class Housecall::Business < Company::Business
   # What Housecall Pro spells otherwise than the vocabulary.
   def self.keys = { phone: :phone_number }
 end
-```
 
-A reader whose value needs more than a rename is declared outright, and a platform that
-answers lazily overrides the private `node` instead, with every inherited reader waiting on
-it.
-
-## Mocking a company
-
-`Company::Mock` is a company answering from what a test hands it, and the one includer this
-gem ships. Only the reading is mocked: every reader on a record runs the real code.
-
-```ruby
-company = Company::Mock.new account: { id: 'account-01', name: 'Acme Plumbing' }
-company.account.name # => 'Acme Plumbing'
-company.account.phone # => nil
+Housecall::Business.node_keys # => [:id, :name, :phone_number], what to ask the platform for
 ```
 
 ## Development
