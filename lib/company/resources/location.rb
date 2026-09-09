@@ -2,16 +2,13 @@ module Company
   # Where work happens: one address the business drives to.
   class Location < Resource
     # What every location reads, by the vocabulary's names.
-    def self.attributes = %i[id street city state zip latitude longitude]
+    def self.attributes = %i[id street city zip latitude longitude]
 
     # @return [String, nil] street, number included.
     def street = attribute :street
 
     # @return [String, nil] town.
     def city = attribute :city
-
-    # @return [String, nil] state, as two letters.
-    def state = attribute :state
 
     # @return [String, nil] ZIP code.
     def zip = attribute :zip

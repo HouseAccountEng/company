@@ -2,10 +2,23 @@ module Company
   # Work the business accepted and scheduled.
   class Job < Resource
     # What every job reads, by the vocabulary's names.
-    def self.attributes = %i[id description created_at scheduled_at completed_at amount]
+    def self.attributes
+      %i[id quote_id quote_amount description instructions created_at scheduled_at completed_at
+         amount]
+    end
 
-    # @return [String, nil] what the work is, in the words of whoever opened the job.
-    def description = attribute :description
+    # @return [String, nil] ID of the quote the job was won with.
+    def quote_id = attribute :quote_id
+
+    # @return [BigDecimal, nil] what that quote came to, in dollars.
+    def quote_amount = decimal :quote_amount
+
+    # @return [String, nil] what whoever opened the job asked the crew to mind.
+    def instructions = attribute :instructions
+
+    # The lines say what the work was where a description only says what it was called.
+    # @return [String] lines as a sentence, or the description, or the ID.
+    def summary = lines.to_sentence.presence || description.presence || id
 
     # @return [Time] moment the job was opened.
     def created_at = time :created_at
@@ -19,16 +32,14 @@ module Company
     # @return [BigDecimal, nil] what the job comes to, in dollars.
     def amount = decimal :amount
 
-    # @return [Enumerable<Line>] lines the work is billed as, empty where none came back.
+    # @return [Array<Line>] lines the work is billed as, empty where none came back.
     def lines = records Line, :lines
-
-    # @return [Enumerable<Visit>] stops the work is booked as, empty where none came back.
-    def visits = records Visit, :visits
-
-    # @return [Customer, nil] who the work is for, where they came back beside the job.
-    def customer = record Customer, :customer
 
     # @return [Location, nil] where the work happens, where it came back beside the job.
     def location = record Location, :location
+
+  private
+
+    def description = attribute :description
   end
 end

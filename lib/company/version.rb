@@ -1,4 +1,5 @@
+# The vocabulary two platform gems share: an account opens a business and the records it holds.
 module Company
   # The version of this gem, as RubyGems knows it.
-  VERSION = '0.1.0'
+  VERSION = '1.0.0'
 end

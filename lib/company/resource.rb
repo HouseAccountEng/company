@@ -1,9 +1,9 @@
 module Company
-  # What every record shares: the node the platform answered it as, and the company it was
-  # read from. Built by the company, never by a caller.
+  # What every record shares: the node the platform answered it as. Built by the gem that read
+  # it, never by a caller.
   class Resource
     # The node keys the platform spells otherwise than the vocabulary, by the reader they
-    # answer: `{ phone: :phone_number }` reads {Account#phone} off `phone_number`. A gem
+    # answer: `{ phone: :phone_number }` reads {Business#phone} off `phone_number`. A gem
     # declares its own; a reader left out reads the key of its own name.
     # @return [Hash] reader-to-key exceptions, empty where every name is its key.
     def self.keys = {}
@@ -13,21 +13,17 @@ module Company
     # @return [Array<Symbol>] node keys, in the order the attributes are read.
     def self.node_keys = attributes.map { |name| keys.fetch name, name }
 
-    # @param company [Company] business the record was read from.
-    # @param node [Hash] record as the platform answered it.
-    def initialize(company:, node: {})
+    # @param node [Hash] record as the platform answered it, under either kind of key.
+    def initialize(node: {})
       @node = node.with_indifferent_access
-      @company = company
     end
 
-    # @return [String] ID the company files the record under.
+    # @return [String] ID the platform files the record under.
     def id = attribute :id
 
   private
 
-    def node = @node
-
-    def attribute(name) = node[self.class.keys.fetch(name, name)]
+    def attribute(name) = @node[self.class.keys.fetch(name, name)]
 
     def time(name)
       value = attribute name
@@ -39,10 +35,8 @@ module Company
       BigDecimal value.to_s if value.present?
     end
 
-    def record(type, key) = (type.new node: @node[key], company: @company if @node[key])
+    def record(type, key) = (type.new node: @node[key] if @node[key])
 
-    def records(type, key)
-      Array(@node[key]).map { |each| type.new node: each, company: @company }
-    end
+    def records(type, key) = Array(@node[key]).map { |each| type.new node: each }
   end
 end

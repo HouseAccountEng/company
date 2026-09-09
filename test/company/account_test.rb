@@ -1,35 +1,28 @@
 require 'test_helper'
 
+# A gem answers the readers its platform offers, and leaves the rest to raise.
+class JobsAccount < Company::Account
+  def jobs = [ Company::Job.new(node: { id: 'job-01' }) ]
+end
+
 class AccountTest < Minitest::Test
-  def test_reads_the_business_behind_the_credentials
-    company = Company::Mock.new account: { id: 'account-01', name: 'Acme Plumbing',
-                                           phone: '7044597540', }
+  def test_refuses_every_reader_a_gem_leaves_out_naming_the_gem_and_the_reader
+    account = Company::Account.new
 
-    assert_equal 'account-01', company.account.id
-    assert_equal 'Acme Plumbing', company.account.name
-    assert_equal '7044597540', company.account.phone
+    error = assert_raises(NotImplementedError) { account.business }
+    assert_equal 'Company::Account does not answer business', error.message
+    assert_raises(NotImplementedError) { account.leads }
+    assert_raises(NotImplementedError) { account.quotes }
+    assert_raises(NotImplementedError) { account.jobs }
+    assert_raises(NotImplementedError) { account.visits }
+    assert_raises(NotImplementedError) { account.invoices }
   end
 
-  def test_walks_every_job_the_business_holds
-    company = Company::Mock.new jobs: [ { id: 'job-01' }, { id: 'job-02' } ]
+  def test_answers_the_reader_a_gem_overrides_and_refuses_the_rest_in_its_own_name
+    account = JobsAccount.new
 
-    assert_equal %w[job-01 job-02], company.account.jobs.map(&:id)
+    assert_equal %w[job-01], account.jobs.map(&:id)
+    error = assert_raises(NotImplementedError) { account.visits }
+    assert_equal 'JobsAccount does not answer visits', error.message
   end
-
-  def test_answers_the_phone_as_ten_digits_and_as_nothing_where_none_is_held
-    assert_equal '4562232934', account(phone: '+1 (456) 223-2934').phone
-    assert_nil account(phone: '').phone
-    assert_nil account(phone: nil).phone
-  end
-
-  def test_refuses_a_number_that_is_not_a_north_american_one
-    error = assert_raises(Company::Error) { account(phone: '1009003999').phone }
-
-    assert_equal '1009003999 is not a North American number', error.message
-    assert_raises(Company::Error) { account(phone: '456').phone }
-  end
-
-private
-
-  def account(phone:) = Company::Mock.new(account: { phone: phone }).account
 end

@@ -18,6 +18,10 @@ module Company
     # @return [BigDecimal, nil] what the line comes to, in dollars.
     def amount = decimal :amount
 
+    # @return [String] how many of what: `3 Bathroom Faucet Installation`, or the name alone
+    #   where the platform holds no quantity for the line.
+    def to_s = [ quantity, name ].compact.join ' '
+
   private
 
     def whole(number) = number && ((number % 1).zero? ? number.to_i : number)

@@ -2,18 +2,18 @@ module Company
   # A person the business works for.
   class Customer < Resource
     # What every customer reads, by the vocabulary's names.
-    def self.attributes = %i[id first_name last_name]
+    def self.attributes = %i[id name last_name email phone]
 
-    # @return [String, nil] their first name.
-    def first_name = attribute :first_name
+    # @return [String, nil] what they go by: a given name, or a business's where a person has none.
+    def name = attribute :name
 
     # @return [String, nil] their last name.
     def last_name = attribute :last_name
 
-    # @return [String] what they are called, by whichever of their names the company holds.
-    def name = [ first_name, last_name ].compact.join ' '
+    # @return [String, nil] address they are written to.
+    def email = attribute :email
 
-    # @return [Enumerable<Location>] places on the customer's file, empty where none came back.
-    def locations = records Location, :locations
+    # @return [String, nil] ten digits they are reached on, nil where none can be dialed.
+    def phone = Phone.from attribute(:phone)
   end
 end
