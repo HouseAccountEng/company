@@ -20,8 +20,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   wrote them and the amounts as dollars in a BigDecimal
 * [Feature] `Company::Line` -- id, name, description, quantity, amount -- a whole quantity read
   whole
-* [Feature] `Company::Visit` -- id, description, starts_at, ends_at, all_day?, confirmed?,
-  location
+* [Feature] `Company::Visit` -- id, description, starts_at, ends_at, anytime?, location
 * [Feature] `Company::Invoice` -- id, job, amount, and fulfilled_at: when the billed work
   was finished, or the bill issued where the work is undated
 * [Feature] `Company::Location` -- id, street, city, zip, latitude, longitude, customer -- and
