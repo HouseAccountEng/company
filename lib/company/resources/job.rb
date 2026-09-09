@@ -3,14 +3,14 @@ module Company
   class Job < Resource
     # What every job reads, by the vocabulary's names.
     def self.attributes
-      %i[id description instructions created_at scheduled_at completed_at amount]
+      %i[id description notes created_at scheduled_at completed_at amount]
     end
 
     # @return [String, nil] what the work is called, in the words of whoever opened the job.
     def description = attribute :description
 
-    # @return [String, nil] what whoever opened the job asked the crew to mind.
-    def instructions = attribute :instructions
+    # @return [String, nil] what was written on the job for the crew to mind.
+    def notes = attribute :notes
 
     # @return [Time] moment the job was opened.
     def created_at = time :created_at

@@ -15,7 +15,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   flat, so the list is never empty; a gem whose platform nests them answers the ones directly
   under it from the private `below`
 * [Feature] `Company::Lead` -- id, customer_id -- and `Company::Quote` -- id, lead_id, amount
-* [Feature] `Company::Job` -- id, quote, description, instructions, created_at, scheduled_at,
+* [Feature] `Company::Job` -- id, quote, description, notes, created_at, scheduled_at,
   completed_at, amount, lines, location. The moments answer as Times however the platform
   wrote them and the amounts as dollars in a BigDecimal
 * [Feature] `Company::Line` -- id, name, description, quantity, amount -- a whole quantity read

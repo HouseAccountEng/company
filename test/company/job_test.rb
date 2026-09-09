@@ -5,7 +5,7 @@ class JobTest < Minitest::Test
     lines = [ { id: 'line-01', name: 'Faucet install', quantity: 3.0, amount: 80.0 },
               { name: 'Trip fee' }, ]
     @job = Company::Job.new node: { id: 'job-01', description: 'Furnace tune-up',
-                                    instructions: 'Ring twice',
+                                    notes: 'Ring twice',
                                     quote: { id: 'quote-01', amount: 240.0 },
                                     created_at: '2026-08-08T11:00:00Z',
                                     scheduled_at: '2026-08-09T14:00:00Z', amount: '260.0',
@@ -15,7 +15,7 @@ class JobTest < Minitest::Test
   def test_reads_a_job_as_the_platform_answered_it
     assert_equal 'job-01', @job.id
     assert_equal 'Furnace tune-up', @job.description
-    assert_equal 'Ring twice', @job.instructions
+    assert_equal 'Ring twice', @job.notes
     assert_equal 'quote-01', @job.quote.id
     assert_equal 240, @job.quote.amount
     assert_equal Time.utc(2026, 8, 8, 11), @job.created_at
@@ -27,7 +27,7 @@ class JobTest < Minitest::Test
   end
 
   def test_names_the_node_keys_a_platform_is_expected_to_answer_a_job_with
-    assert_equal %i[id description instructions created_at scheduled_at completed_at amount],
+    assert_equal %i[id description notes created_at scheduled_at completed_at amount],
       Company::Job.node_keys
   end
 
