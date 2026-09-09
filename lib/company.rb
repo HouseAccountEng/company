@@ -12,6 +12,7 @@ require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/array/conversions'
 
 require 'company/error'
+require 'company/throttled'
 require 'company/phone'
 require 'company/resource'
 require 'company/account'

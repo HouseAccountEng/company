@@ -31,7 +31,9 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   a gem builds its query from what the vocabulary reads
 * [Feature] A phone answers as the ten digits a North American number is, however the platform
   wrote it, and as nil where none is held or none can be dialed
-* [Feature] `Company::Error`, what every error a platform gem raises descends from
+* [Feature] `Company::Error`, what every error a platform gem raises descends from, and
+  `Company::Throttled`, what a platform raises where it holds a request to a rate and answers
+  the same question a little later
 
 The draft that had `Company` included the way `Enumerable` is, answering `read`, with an
 `Account` record and a `Company::Mock`, never shipped.

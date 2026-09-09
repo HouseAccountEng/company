@@ -162,6 +162,11 @@ end
 Housecall::Business.node_keys # => [:id, :name, :phone_number], what to ask the platform for
 ```
 
+## Errors
+
+Every error a platform gem raises descends from `Company::Error`, so one rescue catches the
+lot, and one held to a rate from `Company::Throttled`, so one retry covers every platform.
+
 ## Development
 
 `bin/setup` gets a clone working, `bin/console` opens a prompt with the library loaded, and
