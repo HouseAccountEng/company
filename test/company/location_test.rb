@@ -6,7 +6,7 @@ class LocationTest < Minitest::Test
                                              city: 'Raleigh', zip: '27601', latitude: 35.77,
                                              longitude: -78.63,
                                              customer: { id: 'customer-01', name: 'Jane',
-                                                         last_name: 'Doe',
+                                                         surname: 'Doe',
                                                          email: 'jane@example.com',
                                                          phone: '(704) 459-7540', }, }
 
@@ -18,7 +18,7 @@ class LocationTest < Minitest::Test
     assert_in_delta(-78.63, location.longitude)
     assert_equal 'customer-01', location.customer.id
     assert_equal 'Jane', location.customer.name
-    assert_equal 'Doe', location.customer.last_name
+    assert_equal 'Doe', location.customer.surname
     assert_equal 'jane@example.com', location.customer.email
     assert_equal '7044597540', location.customer.phone
   end

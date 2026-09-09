@@ -25,7 +25,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 * [Feature] `Company::Invoice` -- id, job, amount, and fulfilled_at: when the billed work
   was finished, or the bill issued where the work is undated
 * [Feature] `Company::Location` -- id, street, city, zip, latitude, longitude, customer -- and
-  `Company::Customer` -- id, name, last_name, email, phone
+  `Company::Customer` -- id, name, surname, email, phone
 * [Feature] A record reads the node its platform answered under either kind of key; a kind
   names its attributes, a subclass names under `.keys` the node keys its platform spells
   otherwise -- `{ phone: :phone_number }` -- and `node_keys` answers them through the map, so

@@ -65,7 +65,7 @@ invoice.fulfilled_at                # when the billed work was finished, or the 
 
 location.id, location.street, location.city, location.zip
 location.latitude, location.longitude
-location.customer                   # => Company::Customer: id, name, last_name, email, phone
+location.customer                   # => Company::Customer: id, name, surname, email, phone
 ```
 
 ## Concept map
