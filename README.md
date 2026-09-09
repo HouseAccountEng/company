@@ -45,8 +45,8 @@ nil where none is held or none is a North American number to dial.
 business.id, business.name, business.phone # => '7044597540'
 business.subsidiaries # => itself first, then every business under it, flat; a gem says which
 
-lead.id, lead.customer_id           # who asked for work, and the customer filed for them
-quote.id, quote.lead_id, quote.amount     # a price sent to answer a lead, dollars as a BigDecimal
+lead.id, lead.customer              # who asked for work, and the Company::Customer filed for them
+quote.id, quote.lead, quote.amount  # a price sent to answer a lead, dollars as a BigDecimal
 
 job.id, job.quote                         # => the Company::Quote it was won with, or nil
 job.description                           # what the work is called
@@ -60,7 +60,7 @@ job.location                              # => Company::Location, or nil
 visit.id, visit.description, visit.starts_at, visit.ends_at
 visit.all_day?, visit.confirmed?, visit.location
 
-invoice.id, invoice.job_id, invoice.amount
+invoice.id, invoice.job, invoice.amount   # the Company::Job it bills, or nil
 invoice.fulfilled_at                # when the billed work was finished, or the bill issued
 
 location.id, location.street, location.city, location.zip

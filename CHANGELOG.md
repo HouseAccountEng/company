@@ -14,7 +14,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   The subsidiaries are the business itself and then every business under it at any depth,
   flat, so the list is never empty; a gem whose platform nests them answers the ones directly
   under it from the private `below`
-* [Feature] `Company::Lead` -- id, customer_id -- and `Company::Quote` -- id, lead_id, amount
+* [Feature] `Company::Lead` -- id, customer -- and `Company::Quote` -- id, lead, amount
 * [Feature] `Company::Job` -- id, quote, description, notes, created_at, scheduled_at,
   completed_at, amount, lines, location. The moments answer as Times however the platform
   wrote them and the amounts as dollars in a BigDecimal
@@ -22,7 +22,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   whole, and `to_s` answering how many of what: `3 Bathroom Faucet Installation`
 * [Feature] `Company::Visit` -- id, description, starts_at, ends_at, all_day?, confirmed?,
   location
-* [Feature] `Company::Invoice` -- id, job_id, amount, and fulfilled_at: when the billed work
+* [Feature] `Company::Invoice` -- id, job, amount, and fulfilled_at: when the billed work
   was finished, or the bill issued where the work is undated
 * [Feature] `Company::Location` -- id, street, city, zip, latitude, longitude, customer -- and
   `Company::Customer` -- id, name, last_name, email, phone

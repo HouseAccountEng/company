@@ -2,10 +2,10 @@ module Company
   # A bill the business issued for finished work.
   class Invoice < Resource
     # What every invoice reads, by the vocabulary's names.
-    def self.attributes = %i[id job_id amount completed_at issued_at]
+    def self.attributes = %i[id amount completed_at issued_at]
 
-    # @return [String, nil] ID of the job the invoice bills.
-    def job_id = attribute :job_id
+    # @return [Job, nil] job the invoice bills, where it came back beside the invoice.
+    def job = record Job, :job
 
     # @return [BigDecimal, nil] what the invoice comes to, in dollars.
     def amount = decimal :amount
