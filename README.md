@@ -49,9 +49,8 @@ lead.id, lead.customer_id           # who asked for work, and the customer filed
 quote.id, quote.lead_id, quote.amount     # a price sent to answer a lead, dollars as a BigDecimal
 
 job.id, job.quote                         # => the Company::Quote it was won with, or nil
+job.description                           # what the work is called
 job.instructions                          # what the crew was asked to mind
-job.summary                               # => '3 Faucet install and Trip fee', or the
-                                          #    description, or the ID -- never blank
 job.created_at, job.scheduled_at, job.completed_at # Times, nil where not booked or done
 job.amount                                # dollars, as a BigDecimal
 job.lines                                 # => Company::Line: id, name, description,

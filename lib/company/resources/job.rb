@@ -6,12 +6,11 @@ module Company
       %i[id description instructions created_at scheduled_at completed_at amount]
     end
 
+    # @return [String, nil] what the work is called, in the words of whoever opened the job.
+    def description = attribute :description
+
     # @return [String, nil] what whoever opened the job asked the crew to mind.
     def instructions = attribute :instructions
-
-    # The lines say what the work was where a description only says what it was called.
-    # @return [String] lines as a sentence, or the description, or the ID.
-    def summary = lines.to_sentence.presence || description.presence || id
 
     # @return [Time] moment the job was opened.
     def created_at = time :created_at
@@ -33,9 +32,5 @@ module Company
 
     # @return [Location, nil] where the work happens, where it came back beside the job.
     def location = record Location, :location
-
-  private
-
-    def description = attribute :description
   end
 end

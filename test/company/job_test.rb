@@ -14,6 +14,7 @@ class JobTest < Minitest::Test
 
   def test_reads_a_job_as_the_platform_answered_it
     assert_equal 'job-01', @job.id
+    assert_equal 'Furnace tune-up', @job.description
     assert_equal 'Ring twice', @job.instructions
     assert_equal 'quote-01', @job.quote.id
     assert_equal 240, @job.quote.amount
@@ -25,26 +26,17 @@ class JobTest < Minitest::Test
     assert_equal 'location-01', @job.location.id
   end
 
-  def test_sums_a_job_up_by_its_lines_then_its_description_then_its_id
-    assert_equal '3 Faucet install and Trip fee', @job.summary
-    assert_equal 'Furnace tune-up', job(description: 'Furnace tune-up').summary
-    assert_equal 'job-02', job(description: '').summary
-  end
-
   def test_names_the_node_keys_a_platform_is_expected_to_answer_a_job_with
     assert_equal %i[id description instructions created_at scheduled_at completed_at amount],
       Company::Job.node_keys
   end
 
   def test_reads_nothing_where_the_platform_answered_nothing
-    job = job description: nil
+    job = Company::Job.new node: { id: 'job-02' }
 
+    assert_nil job.description
     assert_nil job.quote
     assert_nil job.location
     assert_equal [], job.lines
   end
-
-private
-
-  def job(description:) = Company::Job.new(node: { id: 'job-02', description: description })
 end
