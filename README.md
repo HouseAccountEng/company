@@ -148,6 +148,11 @@ Gataware: Two Maids' in-house platform (trademark of Two Maids Franchising, LLC)
 
 ## Answering as a gem
 
+The least a gem writes is under `test/acme`: an account over a few records of its own, with
+`each` and `between` on its collections, `create` on its leads, and one `keys` map. The test
+that runs every reader through it, `test/company/acme_test.rb`, reads as a tutorial.
+
+
 A gem subclasses `Company::Account` and answers the readers its platform offers, holding its
 own credentials however the platform hands them out:
 
