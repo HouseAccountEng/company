@@ -13,7 +13,7 @@ require 'active_support/core_ext/array/conversions'
 require 'active_support/core_ext/numeric/time'
 
 require 'company/error'
-require 'company/throttled'
+require 'company/errors/throttled'
 require 'company/phone'
 require 'company/resource'
 require 'company/collection'
