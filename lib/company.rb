@@ -4,17 +4,19 @@ require 'time'
 require 'company/version'
 
 # Only the Active Support files whose methods are used: a name a platform holds nothing for
-# arrives as readily empty as null, a node reads under either kind of key, and the lines of a
-# job join into one sentence.
+# arrives as readily empty as null, a node reads under either kind of key, the lines of a job
+# join into one sentence, and a moment plus a duration is a moment.
 require 'active_support'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/array/conversions'
+require 'active_support/core_ext/numeric/time'
 
 require 'company/error'
 require 'company/throttled'
 require 'company/phone'
 require 'company/resource'
+require 'company/collection'
 require 'company/account'
 require 'company/resources/business'
 require 'company/resources/customer'

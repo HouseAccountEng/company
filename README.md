@@ -25,8 +25,8 @@ it; the vocabulary says what it answers:
 
 ```ruby
 account.business # => a Company::Business, who the credentials belong to
-account.jobs     # => the business's jobs, walked however the platform pages them
-account.visits   # => the business's visits: `find` reads one by ID
+account.jobs     # => a Company::Collection of jobs, walked however the platform pages them
+account.visits   # => a Company::Collection of visits
 account.quotes   # => the business's quotes: `find` reads one by ID
 account.leads    # => the business's leads: `create` files one
 account.invoices # => the business's invoices: `find` reads one by ID
@@ -34,6 +34,11 @@ account.invoices # => the business's invoices: `find` reads one by ID
 
 A platform that offers no such thing raises `NotImplementedError` naming the gem and the
 reader, rather than answering an empty list.
+
+A collection is `Enumerable`, walked a page at a time however the platform pages it, and
+narrows to a window measured from now: `account.jobs.past(4.weeks)`,
+`account.visits.upcoming(2.weeks)`, or either with no duration for as far as there is. `ids`
+answers every record's ID. A gem answers `each` and `between(from, to)`; the rest is here.
 
 ## What each record answers
 

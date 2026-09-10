@@ -10,6 +10,10 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 * [Feature] `Company::Account`, the gateway a set of credentials opens: a gem subclasses it
   and answers `business`, `jobs`, `visits`, `quotes`, `leads` and `invoices` as its platform
   offers them; a reader left out raises `NotImplementedError` naming the gem and the reader
+* [Feature] `Company::Collection`, what a list of an account's records is: `Enumerable`, and
+  narrowed to a window measured from now by `upcoming(within)` and `past(within)`, both built
+  on the `between(from, to)` a gem answers; `ids` walks it for the IDs unless a gem knows a
+  cheaper way
 * [Feature] `Company::Business` -- id, name, phone, subsidiaries -- who the credentials belong to.
   The subsidiaries are the business itself and then every business under it at any depth,
   flat, so the list is never empty; a gem whose platform nests them answers the ones directly

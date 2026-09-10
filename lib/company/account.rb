@@ -6,10 +6,10 @@ module Company
     # @return [Business] business the credentials belong to.
     def business = unanswered :business
 
-    # @return [#each] jobs of the business, each a {Job}, walked however the platform pages them.
+    # @return [Collection] jobs of the business, each a {Job}; a platform may also `find` one.
     def jobs = unanswered :jobs
 
-    # @return [#find] visits of the business, each a {Visit}: `find` reads one by ID.
+    # @return [Collection] visits of the business, each a {Visit}; a platform may also `find` one.
     def visits = unanswered :visits
 
     # @return [#find] quotes of the business, each a {Quote}: `find` reads one by ID.
