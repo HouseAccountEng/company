@@ -33,7 +33,8 @@ account.invoices # => the business's invoices: `find` reads one by ID
 ```
 
 A platform that offers no such thing raises `NotImplementedError` naming the gem and the
-reader, rather than answering an empty list.
+reader, rather than answering an empty list; one that files no leads answers leads that
+refuse to file one.
 
 A collection is `Enumerable`, walked a page at a time however the platform pages it, and
 narrows to a window measured from now: `account.jobs.past(4.weeks)`,

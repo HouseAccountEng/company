@@ -1,7 +1,7 @@
 module Company
   # The gateway a set of credentials opens on a platform: the business they belong to and the
   # records it holds. A gem subclasses it and answers what its platform offers; a reader it
-  # leaves out raises NotImplementedError.
+  # leaves out raises NotImplementedError, and the leads it leaves out refuse to file one.
   class Account
     # @return [Business] business the credentials belong to.
     def business = unanswered :business
@@ -15,8 +15,8 @@ module Company
     # @return [#find] quotes of the business, each a {Quote}: `find` reads one by ID.
     def quotes = unanswered :quotes
 
-    # @return [Leads] leads of the business: `create` files one.
-    def leads = unanswered :leads
+    # @return [Leads] leads of the business: `create` files one, where the platform takes leads.
+    def leads = Leads.new
 
     # @return [#find] invoices of the business, each an {Invoice}: `find` reads one by ID.
     def invoices = unanswered :invoices

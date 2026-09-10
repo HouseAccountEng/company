@@ -14,8 +14,14 @@ class AccountTest < Minitest::Test
     assert_raises(NotImplementedError) { account.jobs }
     assert_raises(NotImplementedError) { account.visits }
     assert_raises(NotImplementedError) { account.quotes }
-    assert_raises(NotImplementedError) { account.leads }
+    assert_raises(NotImplementedError) { account.leads.create(**lead) }
     assert_raises(NotImplementedError) { account.invoices }
+  end
+
+  def test_hands_over_leads_that_refuse_to_file_one_until_a_gem_says_how
+    error = assert_raises(NotImplementedError) { JobsAccount.new.leads.create(**lead) }
+
+    assert_equal 'Company::Leads does not file a lead', error.message
   end
 
   def test_answers_the_reader_a_gem_overrides_and_refuses_the_rest_in_its_own_name
@@ -24,5 +30,12 @@ class AccountTest < Minitest::Test
     assert_equal %w[job-01], account.jobs.map(&:id)
     error = assert_raises(NotImplementedError) { account.visits }
     assert_equal 'JobsAccount does not answer visits', error.message
+  end
+
+private
+
+  def lead
+    { name: 'Ada', surname: nil, phone: nil, email: nil, address: nil, description: 'Fix the sink',
+      notes: nil, source: nil, }
   end
 end
