@@ -18,9 +18,6 @@ module Company
     # @return [Leads] leads of the business: `create` files one, where the platform takes leads.
     def leads = Leads.new
 
-    # @return [#find] invoices of the business, each an {Invoice}: `find` reads one by ID.
-    def invoices = unanswered :invoices
-
   private
 
     def unanswered(name) = raise NotImplementedError, "#{self.class} does not answer #{name}"

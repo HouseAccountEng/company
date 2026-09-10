@@ -15,7 +15,6 @@ class AccountTest < Minitest::Test
     assert_raises(NotImplementedError) { account.visits }
     assert_raises(NotImplementedError) { account.quotes }
     assert_raises(NotImplementedError) { account.leads.create(**lead) }
-    assert_raises(NotImplementedError) { account.invoices }
   end
 
   def test_hands_over_leads_that_refuse_to_file_one_until_a_gem_says_how

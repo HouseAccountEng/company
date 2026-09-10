@@ -8,7 +8,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 ## 1.0.0 - 2026-09-09
 
 * [Feature] `Company::Account`, the gateway a set of credentials opens: a gem subclasses it
-  and answers `business`, `jobs`, `visits`, `quotes`, `leads` and `invoices` as its platform
+  and answers `business`, `jobs`, `visits`, `quotes` and `leads` as its platform
   offers them; a reader left out raises `NotImplementedError` naming the gem and the reader
 * [Feature] `Company::Collection`, what a list of an account's records is: `Enumerable`, and
   narrowed to a window measured from now by `upcoming(within)` and `past(within)`, both built
@@ -28,8 +28,6 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 * [Feature] `Company::Line` -- id, name, description, quantity, amount -- a whole quantity read
   whole
 * [Feature] `Company::Visit` -- id, description, starts_at, ends_at, anytime?, job
-* [Feature] `Company::Invoice` -- id, job, amount, and fulfilled_at: when the billed work
-  was finished, or the bill issued where the work is undated
 * [Feature] `Company::Location` -- id, street, city, zip, latitude, longitude, customer -- and
   `Company::Customer` -- id, name, surname, email, phone
 * [Feature] A record reads the node its platform answered under either kind of key; a kind

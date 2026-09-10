@@ -2,7 +2,7 @@
 
 The vocabulary two field-service platforms are read in. An account -- a set of credentials on
 Jobber or Housecall Pro -- opens the business it belongs to and the records the business holds:
-leads, quotes, jobs, visits, invoices. A gem that speaks to one platform subclasses
+leads, quotes, jobs, visits. A gem that speaks to one platform subclasses
 `Company::Account` and each kind of record; every reader is named here, once.
 
 ## How to install
@@ -29,7 +29,6 @@ account.jobs     # => a Company::Collection of jobs, walked however the platform
 account.visits   # => a Company::Collection of visits
 account.quotes   # => the business's quotes: `find` reads one by ID
 account.leads    # => a Company::Leads: `create` files one
-account.invoices # => the business's invoices: `find` reads one by ID
 ```
 
 A platform that offers no such thing raises `NotImplementedError` naming the gem and the
@@ -74,9 +73,6 @@ job.location                              # => Company::Location, or nil
 
 visit.id, visit.description, visit.starts_at, visit.ends_at
 visit.anytime?, visit.job                 # => the Company::Job the stop belongs to
-
-invoice.id, invoice.job, invoice.amount   # the Company::Job it bills, or nil
-invoice.fulfilled_at                # when the billed work was finished, or the bill issued
 
 location.id, location.street, location.city, location.zip
 location.latitude, location.longitude
