@@ -27,7 +27,9 @@ module Acme
     end
 
     def each
-      NODES.each { |node| yield Company::Job.new node: node if (@from..@to).cover? node[:scheduled_at] }
+      NODES.each do |node|
+        yield Company::Job.new node: node if (@from..@to).cover? node[:scheduled_at]
+      end
     end
 
     def between(from, to) = self.class.new(from: from, to: to)
