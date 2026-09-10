@@ -2,7 +2,7 @@
 
 The vocabulary two field-service platforms are read in. An account -- a set of credentials on
 Jobber or Housecall Pro -- opens the business it belongs to and the records the business holds:
-leads, quotes, jobs, visits. A gem that speaks to one platform subclasses
+leads, jobs, visits, and the quote a job was won with. A gem that speaks to one platform subclasses
 `Company::Account` and each kind of record; every reader is named here, once.
 
 ## How to install
@@ -27,7 +27,6 @@ it; the vocabulary says what it answers:
 account.business # => a Company::Business, who the credentials belong to
 account.jobs     # => a Company::Collection of jobs, walked however the platform pages them
 account.visits   # => a Company::Collection of visits
-account.quotes   # => the business's quotes: `find` reads one by ID
 account.leads    # => a Company::Leads: `create` files one
 ```
 

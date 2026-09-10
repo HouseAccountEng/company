@@ -12,9 +12,6 @@ module Company
     # @return [Collection] visits of the business, each a {Visit}; a platform may also `find` one.
     def visits = unanswered :visits
 
-    # @return [#find] quotes of the business, each a {Quote}: `find` reads one by ID.
-    def quotes = unanswered :quotes
-
     # @return [Leads] leads of the business: `create` files one, where the platform takes leads.
     def leads = Leads.new
 

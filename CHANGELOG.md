@@ -8,7 +8,7 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
 ## 1.0.0 - 2026-09-09
 
 * [Feature] `Company::Account`, the gateway a set of credentials opens: a gem subclasses it
-  and answers `business`, `jobs`, `visits`, `quotes` and `leads` as its platform
+  and answers `business`, `jobs`, `visits` and `leads` as its platform
   offers them; a reader left out raises `NotImplementedError` naming the gem and the reader
 * [Feature] `Company::Collection`, what a list of an account's records is: `Enumerable`, and
   narrowed to a window measured from now by `upcoming(within)` and `past(within)`, both built
