@@ -2,9 +2,7 @@ module Company
   # Work the business accepted and scheduled.
   class Job < Resource
     # What every job reads, by the vocabulary's names.
-    def self.attributes
-      %i[id description notes created_at scheduled_at completed_at amount]
-    end
+    def self.attributes = %i[id description notes created_at scheduled_at completed_at amount]
 
     # @return [String, nil] what the work is called, in the words of whoever opened the job.
     def description = attribute :description
