@@ -15,7 +15,7 @@ module Company
     # @return [#find] quotes of the business, each a {Quote}: `find` reads one by ID.
     def quotes = unanswered :quotes
 
-    # @return [#create] leads of the business, each a {Lead}: `create` files one.
+    # @return [Leads] leads of the business: `create` files one.
     def leads = unanswered :leads
 
     # @return [#find] invoices of the business, each an {Invoice}: `find` reads one by ID.

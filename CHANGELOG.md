@@ -14,6 +14,9 @@ For more information about changelogs, check [Keep a Changelog](http://keepachan
   narrowed to a window measured from now by `upcoming(within)` and `past(within)`, both built
   on the `between(from, to)` a gem answers; `ids` walks it for the IDs unless a gem knows a
   cheaper way
+* [Feature] `Company::Leads`, what files a lead: `create` takes the same words on every
+  platform -- name, surname, phone, email, address, description, notes, source -- and a gem
+  drops what its platform has no field for
 * [Feature] `Company::Business` -- id, name, phone, subsidiaries -- who the credentials belong to.
   The subsidiaries are the business itself and then every business under it at any depth,
   flat, so the list is never empty; a gem whose platform nests them answers the ones directly

@@ -28,7 +28,7 @@ account.business # => a Company::Business, who the credentials belong to
 account.jobs     # => a Company::Collection of jobs, walked however the platform pages them
 account.visits   # => a Company::Collection of visits
 account.quotes   # => the business's quotes: `find` reads one by ID
-account.leads    # => the business's leads: `create` files one
+account.leads    # => a Company::Leads: `create` files one
 account.invoices # => the business's invoices: `find` reads one by ID
 ```
 
@@ -39,6 +39,15 @@ A collection is `Enumerable`, walked a page at a time however the platform pages
 narrows to a window measured from now: `account.jobs.past(4.weeks)`,
 `account.visits.upcoming(2.weeks)`, or either with no duration for as far as there is. `ids`
 answers every record's ID. A gem answers `each` and `between(from, to)`; the rest is here.
+
+A lead is filed with the same words on every platform, and a platform drops what it has no
+field for:
+
+```ruby
+account.leads.create name: 'Ada', surname: 'Lovelace', phone: '5553335555',
+  email: 'ada@example.com', address: { street: '1 Main St', city: 'Newark', state: 'NJ',
+  zip: '07102' }, description: 'Fix the sink', notes: 'Estimate $100–$200', source: 'Website'
+```
 
 ## What each record answers
 
