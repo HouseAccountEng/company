@@ -71,6 +71,15 @@ class AcmeTest < Minitest::Test
     assert_nil job.location.customer.email
   end
 
+  # The business serves the ZIP codes it groups into areas, each under a name of its own.
+  def test_the_areas_name_the_zip_codes_the_business_serves
+    area = @account.areas.first
+
+    assert_equal %w[area-1 area-2], @account.areas.ids
+    assert_equal 'Downtown', area.name
+    assert_equal %w[27601 27603], area.zips
+  end
+
   # A kind names what it reads, and a gem asks its platform for exactly those keys, spelled
   # through the `keys` it maps: Acme's business spells its phone the way Housecall Pro does.
   def test_a_gem_asks_its_platform_for_the_keys_the_vocabulary_reads

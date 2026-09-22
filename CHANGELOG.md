@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 For more information about changelogs, check [Keep a Changelog](http://keepachangelog.com) and
 [Vandamme](http://tech-angels.github.io/vandamme).
 
+## 4.1.0 - 2026-09-22
+
+- [Feature] `account.areas`, a list of `Company::Area`: the areas a business serves, each a
+  name and the ZIP codes under it. A gem that has not been taught to read them raises
+  `NotImplementedError`, and a platform that draws no areas answers an empty list.
+
 ## 4.0.0 - 2026-09-17
 
 - [Breaking change] `of` takes the ID a platform files a technician under rather than the
