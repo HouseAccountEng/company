@@ -13,6 +13,8 @@ module Acme
 
     def windows = Windows.new
 
+    def areas = Areas.new
+
     def leads = Leads.new
   end
 end

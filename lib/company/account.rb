@@ -18,6 +18,9 @@ module Company
     # @return [Windows] free time of the business, each a {Window}, where the platform works it out.
     def windows = unanswered :windows
 
+    # @return [Collection] areas the business serves, each an {Area}.
+    def areas = unanswered :areas
+
     # @return [Leads] leads of the business: `create` files one, where the platform takes leads.
     def leads = Leads.new
 

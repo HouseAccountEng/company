@@ -107,6 +107,11 @@ free = account.windows.between(monday, sunday).of(technician.id)
 free.first.starts_at                     # => 2026-09-16 13:00:00 UTC
 free.first.ends_at                       # => 2026-09-16 17:00:00 UTC
 
+area = account.areas.first               # => #<Acme::Area>
+area.id                                  # => 'z1'
+area.name                                # => 'Downtown'
+area.zips                                # => ['98920', '98921']
+
 lead = account.leads.create name: 'Jane', surname: 'Qi', phone: '5555555666',
   email: 'jane@example.com', address: { street: '100 Acme Circle', zip: '98920' },
   description: 'Repair', notes: 'Estimate $20–$30', source: 'Website'
@@ -141,6 +146,9 @@ being made, since only the caller making one knows how long it needs them to be.
 A platform that does not work free time out for itself answers `windows` with
 `NotImplementedError` rather than with none. An empty week and a fully booked one are the same
 shape, so a caller reading none as none would quietly stop offering that business at all.
+
+An area is where the business goes: a name and the ZIP codes under it. A platform that draws no
+areas answers none, and one that has not been taught to read them raises `NotImplementedError`.
 
 ## Answering as a gem
 
